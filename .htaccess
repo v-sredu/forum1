@@ -1,24 +1,8 @@
 RewriteEngine On
 RewriteBase /
 
-#запрет открытия неких файлов
-<FilesMatch ".(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
- Order Allow,Deny
- Deny from all
- </FilesMatch>
-
-#запрет выдачи директории папок
-Options -Indexes
-
 ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
 RewriteCond %{REQUEST_URI} !\.(js|css|ico|jpg|png|gif|php)$
 
-RewriteRule ^reg$ reg.php
-RewriteRule ^auth$ auth.php
-RewriteRule ^main$ index.php
-RewriteRule ^main/[0-9]+$ post.php
-RewriteRule ^user/create_post$ create_post.php
-RewriteRule ^user/[0-9]+$ account.php
-RewriteRule ^user/setting_account$ setting_account.php
-RewriteRule ^user/[0-9]+/setting_post$ setting_post.php
-RewriteRule ^404$ 404.php/
+RewriteRule  .* public/index.php [L,QSA]

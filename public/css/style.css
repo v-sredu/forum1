@@ -1,0 +1,80 @@
+[data-bs-theme=light] {
+	--bs-secondary-color: rgba(164, 168, 172, 0.75);
+	--bs-secondary-color-rgb: 164, 168, 172;
+	--bs-border-color: #b7c0cc;
+	--body-gradient-1: rgba(0, 106, 255, 0.15);
+	--body-gradient-2: rgba(114, 0, 51, 0.2);
+	--body-gradient-3: rgba(29, 90, 0, 0.22);
+	--icon-like-active: rgb(231, 118, 118);
+	--icon-bookmark-active: rgb(235, 226, 111);
+}
+
+[data-bs-theme=dark] {
+	--body-gradient-1: rgba(255, 151, 239, 0.15);
+	--body-gradient-2: rgba(151, 193, 255, 0.15);
+	--body-gradient-3: rgba(170, 249, 163, 0.12);
+	--bs-gray-400: rgb(22, 31, 36);
+	--bs-body-bg: #071824;
+	--bs-body-bg-rgb: 7, 24, 36;
+	--bs-body-color-rgb: 166, 173, 178;
+	--bs-body-color: #a6adb2;
+	--bs-border-color: #141f24;
+	--bs-secondary-bg-rgb: 26, 39, 48;
+	--bs-info-bg-subtle: rgb(35, 54, 67);
+	--bs-tertiary-bg: rgb(35, 54, 68);
+	--bs-info-text-emphasis: rgb(121, 141, 160);
+	--bs-secondary-bg: #233642;
+}
+
+.dropdown-item {
+	--bs-dropdown-link-active-color: var(--bs-badge-color);
+	--bs-dropdown-link-active-bg: var(--bs-info-bg-subtle);
+}
+
+nav {
+	--bs-pagination-border-color: var(--bs-info-bg-subtle) !important;
+}
+
+body {
+	background: radial-gradient(
+			circle at 50% 0,
+			var(--body-gradient-1),
+			rgba(0, 0, 0, 0) 70.71%
+	),
+	radial-gradient(
+			circle at 6.7% 75%,
+			var(--body-gradient-2),
+			rgba(0, 0, 0, 0) 70.71%
+	),
+	radial-gradient(
+			circle at 93.3% 75%,
+			var(--body-gradient-3),
+			rgba(0, 0, 0, 0) 70.71%
+	), var(--bs-body-bg);
+}
+
+.profile-avatar {
+	margin-top: -40px;
+	outline: var(--bs-body-bg) solid 12px;
+	box-shadow: 0 15px 20px 5px var(--bs-gray-400);
+}
+
+.disabled a {
+	background: var(--bs-secondary-bg-rgb) !important;
+}
+
+.mw-500 {
+	max-width: 500px;
+}
+
+svg {
+	color: var(--bs-secondary-color);
+}
+
+svg.select.like {
+	color: var(--icon-like-active);
+}
+
+svg.select.bookmark {
+	color: var(--icon-bookmark-active);
+}

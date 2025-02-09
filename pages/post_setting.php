@@ -1,13 +1,19 @@
 <?php
-session_start();
-require_once 'functions.php';
-$link = require 'connect.php';
 $id = $_SESSION['id'];
 
+preg_match('#user/(?<id>[0-9]+)/setting_post#', $_SERVER['REQUEST_URI'], $params);
+$post_id = $params['id'];
+$query = "SELECT * FROM posts WHERE id = '$post_id'";
+$post = mysqli_fetch_assoc(mysqli_query($link, $query));
+
 if (!empty($_POST['title'])) {
-    list('title' => $title, 'content' => $content, 'theme' => $theme_id) = $_POST;
+    ['title' => $title, 'content' => $content, 'theme' => $theme_id] = $_POST;
     $content = nl2br(htmlspecialchars($content));
-    $query = "INSERT INTO posts (theme_id, cover, title, content, user_id, views) VALUES ('$theme_id', DEFAULT, '$title', '$content', '$id',  DEFAULT)";
+    $query = "UPDATE posts SET
+    theme_id = '$theme_id',
+    title = '$title',
+    content = '$content'
+    WHERE id = '$post_id'";
     if (!empty($_FILES) && $_FILES['cover']['size'] > 0) {
         if ($_FILES['cover']['size'] > 1048576) {
             CreateCookie('is_invalid_file', true);
@@ -50,22 +56,21 @@ ob_start();
             <?= $_COOKIE['error_file'] ?>
         </div>
         <label for="validationCustom03" class="form-label mt-3">Заголовок</label>
-        <input type="text" minlength="1" class="form-control mb-3" id="validationCustom03" name="title" required>
+        <input type="text" minlength="1" class="form-control mb-3" id="validationCustom03" name="title" value="<?= $post['title'] ?>" required>
         <label for="themes" class="form-label">Выбрать тему</label>
         <select class="form-select light" id="themes" name="theme" aria-label="Default select example" required>
-            <option value="1" selected>другое</option>
             <?php
             $query = "SELECT * FROM themes";
             $result = mysqli_query($link, $query);
             for ($row = mysqli_fetch_assoc($result); $row = mysqli_fetch_assoc($result);) : ?>
-                <option value="<?= $row['id'] ?>"><?= $row['theme'] ?></option>
+                <option value="<?= $row['id'] ?>" <?= ($row['id'] === $post['theme_id']) ? 'selected' : '' ?>><?= $row['theme'] ?></option>
             <?php endfor; ?>
         </select>
         <label for="validationTextarea" class="form-label">Текст</label>
         <textarea class="form-control border-dark-subtle w-100 mb-3" id="validationTextarea" name="content" rows="20"
-              maxlength="4000"  minlength="100"  placeholder="От НЛО спасают шапочки из фольги..." required></textarea>
+                  maxlength="4000"  minlength="100" placeholder="От НЛО спасают шапочки из фольги..." required><?= $post['content'] ?></textarea>
         <input type="submit" value="Отправить" class="btn btn-info border-0 float-end">
     </form>
 <?php
 $output = ob_get_clean();
-echo template('layout.php', ['content' => $output, 'title' => 'Создание поста']);
+echo template('layout.php', ['content' => $output, 'title' => 'Изменение поста']);
