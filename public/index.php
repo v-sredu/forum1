@@ -8,9 +8,9 @@ const DB = new Database();
 $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
 $uri = explode('?', $uri)[0];
 
-//setcookie('auth', true);
+setcookie('auth', true);
 setcookie('a', 2123);
-setcookie('auth', true, time() - 100);
+//setcookie('auth', true, time() - 100);
 
 $user_data = [
 	'auth' => $_COOKIE['auth'] ?? false,
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	{
 		$json = file_get_contents('php://input');
 		$data = json_decode($json, true);
-
 		switch ($data['typePost'])
 		{
 			case 'like_select':

@@ -3,11 +3,10 @@
 		<div class="border-top w-100">
 		</div>
 		<div class="btn-group">
-			<button class="btn dropdown-toggle btn-sm border-0" type="button" data-bs-toggle="dropdown"
-					aria-expanded="false">
+			<button class="btn dropdown-toggle btn-sm border-0" type="button" id="buttonSort">
 				Сортировать по:
 			</button>
-			<ul class="dropdown-menu border-0 shadow-sm">
+			<ul class="dropdown-menu border-0 shadow-sm" id="modalSort">
 				<li><a class="dropdown-item small"
 							href="/?<?=link_create('sort', 'date')?>">По дате</a></li>
 				<li><a class="dropdown-item small"
@@ -21,26 +20,6 @@
 
 	<div class="cards mb-4 d-flex flex-column gap-3">
 		<?php
-		$sql = 'SELECT COUNT(posts.id) as count, posts.id as post_id FROM posts JOIN likes ON likes.post_id = posts.id GROUP BY posts.id';
-		$res = DB->query($sql)->getAll();
-		foreach ($res as $row)
-		{
-			$likes[$row['post_id']] = $row['count'];
-		}
-		$sql = 'SELECT COUNT(posts.id) as count, posts.id as post_id FROM posts JOIN comments ON comments.post_id = posts.id GROUP BY posts.id';
-		$res = DB->query($sql)->getAll();
-		foreach ($res as $row)
-		{
-			$comments[$row['post_id']] = $row['count'];
-		}
-		$sql = 'SELECT tags.name as tag, tags.id as tag_id, posts.id as post_id FROM tags JOIN posts_tags ON tags.id = posts_tags.tag_id JOIN posts ON posts.id = posts_tags.post_id';
-		$res = DB->query($sql)->getAll();
-		$tags = [];
-		foreach ($res as $row)
-		{
-			$tags[$row['post_id']][$row['tag_id']] = $row['tag'];
-		}
-
 		if (!empty($sort) && in_array($sort, [
 				'date',
 				'likes',
@@ -50,19 +29,19 @@
 			switch ($sort)
 			{
 				case 'date':
-					usort($data, function($a, $b)
+					usort($cards_data, function($a, $b)
 					{
 						return new DateTime($b['date'])<=>new DateTime($a['date']);
 					});
 					break;
 				case 'likes':
-					usort($data, function($a, $b)
+					usort($cards_data, function($a, $b)
 					{
 						return $b['likes']<=>$a['likes'];
 					});
 					break;
 				case 'views':
-					usort($data, function($a, $b)
+					usort($cards_data, function($a, $b)
 					{
 						return $b['views']<=>$a['views'];
 					});
@@ -119,14 +98,15 @@
 					<button class="like btn border-0 p-0 text-muted d-flex align-items-center gap-1"
 						<?=$like_is_select ? 'data-is-select' : ''?>
 							data-post-id="<?=$card['id']?>" data-type-post="like_select" type="button">
-						<span><?=$likes[$id] ?? 0?></span>
-						<svg class="like <?=$like_is_select ? 'select' : ''?>" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+						<span><?=$card['likes']?></span>
+						<svg class="like <?=$like_is_select ? 'select' : ''?>" width="16" height="16"
+								fill="currentColor" viewBox="0 0 16 16">
 							<path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"></path>
 						</svg>
 					</button>
 
 					<div class="text-decoration-none text-muted d-flex align-items-center gap-1">
-						<span><?=$comments[$id] ?? 0?></span>
+						<span><?=$card['comments']?></span>
 						<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 							<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
 						</svg>
@@ -144,7 +124,8 @@
 							data-post-id="<?=$card['id']?>"
 							data-type-post="post_favorite_select"
 							type="button">
-						<svg class="bookmark <?=$post_is_favorite ? 'select' : ''?>" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+						<svg class="bookmark <?=$post_is_favorite ? 'select' : ''?>" width="16" height="16"
+								fill="currentColor" viewBox="0 0 16 16">
 							<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
 						</svg>
 					</button>

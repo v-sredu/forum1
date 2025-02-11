@@ -45,10 +45,8 @@
 					<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
 					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 				<?php else: ?>
-					<a href="" class="list-group-item rounded-3">войти</a>
-					<a href="../../../public/index.php" class="text-decoration-none small text-dark">вход</a> / <a
-							href="../../../public/index.php"
-							class="text-decoration-none small text-dark">регистрация</a>
+					<a href="" class="list-group-item rounded-3">вход</a>
+					<a href="" class="list-group-item rounded-3">регистрация</a>
 				<?php endif; ?>
 			</div>
 			<div class="list-group list-group-flush d-block p-0 text-start">

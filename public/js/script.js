@@ -25,6 +25,7 @@ function toggleModal(button_link, modal_link, styles_toggle_array) {
 
 toggleModal('#buttonNav', '#modalNav', ['show']);
 toggleModal('#buttonAuthWarning', '#modalAuthWarning', ['invisible']);
+toggleModal('#buttonSort', '#modalSort', ['show'])
 
 function selectButton(button) {
 	if (getCookie('auth')) {
