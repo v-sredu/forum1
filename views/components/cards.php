@@ -65,9 +65,9 @@
 			$likes_select = [];
 			$posts_favorite = [];
 		}
-		foreach ($cards_data as $id => $card) :
-			$post_is_favorite = in_array($id, $posts_favorite);
-			$like_is_select = in_array($id, $likes_select);
+		foreach ($cards_data as $card) :
+			$post_is_favorite = in_array($card['id'], $posts_favorite);
+			$like_is_select = in_array($card['id'], $likes_select);
 			?>
 			<div class="card border-0 rounded-4 p-3 mb-2">
 
