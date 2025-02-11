@@ -39,5 +39,6 @@ function get_component(string $component_file, $data): string
 
 function link_create($key, $var):string
 {
+	unset($_GET['page']);
 	return http_build_query(array_merge($_GET, [$key => $var]));
 }
