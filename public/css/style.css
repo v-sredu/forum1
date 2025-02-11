@@ -7,6 +7,7 @@
 	--body-gradient-3: rgba(29, 90, 0, 0.22);
 	--icon-like-active: rgb(231, 118, 118);
 	--icon-bookmark-active: rgb(235, 226, 111);
+	--button-active: var(--icon-bookmark-active);
 }
 
 [data-bs-theme=dark] {
@@ -60,9 +61,12 @@ body {
 }
 
 .disabled a {
-	background: var(--bs-secondary-bg-rgb) !important;
+	background-color: var(--bs-secondary-bg-rgb);
 }
 
+.active a, .active.disabled a {
+	background-color: var(--button-active);
+}
 .mw-500 {
 	max-width: 500px;
 }

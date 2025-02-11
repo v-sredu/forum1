@@ -1,42 +1,45 @@
 <?php
-//try
-//{
 session_start();
-require_once __DIR__ . '\..\core\config.php';
-require_once ROOT . 'helpers\helpers.php';
-require_once ROOT . 'core\Database.php';
+require_once __DIR__ . '/../core/config.php';
+require_once ROOT . '/helpers/helpers.php';
+require_once ROOT . '/core/Database.php';
 
-$pdo = new Database(HOSTNAME, DATABASE, USERNAME, PASSWORD, CHARSET, OPTIONS);
-$uri = ltrim($_SERVER['REQUEST_URI'], '/');
+const DB = new Database();
+$uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
 $uri = explode('?', $uri)[0];
 
+//setcookie('auth', true);
+setcookie('a', 2123);
+setcookie('auth', true, time() - 100);
+
 $user_data = [
-	'auth' => $_SESSION['auth'] ?? false,
+	'auth' => $_COOKIE['auth'] ?? false,
 	'theme' => 'light'
 ];
-$user_data['auth'] = true;
+
 if ($user_data['auth'])
 {
-	$id = $_SESSION['id'] ?? 2;
+	$id = $_COOKIE['id'] ?? 2;
 	$query = 'SELECT * FROM users WHERE id = :id';
 	$vars = ['id' => $id];
-	$user_data += $pdo->query($query, $vars)[0];
+	$user_data += DB->query($query, $vars)->getOne();
 	if (empty($user_data['avatar']))
 	{
 		$user_data['avatar'] = 'none.jpg';
 	}
 }
+
 $pages = [
-	'index.php' => '#^$#',
-	'account.php' => '#^user/(?<slug>.+)$#',
-	'account_setting.php' => '#^settings$#',
-	'auth.php' => '#^authorization$#',
-	'post.php' => '#^post/(?<slug>.+)$#',
-	'post_create.php' => '#^post/create$#',
-	'post_setting.php' => '#^post/setting$#',
-	'reg.php' => '#^registration$#',
-	'404.php' => '#^404$#',
-	'500.php' => '#^500$#'
+	'index.php' => '#^/$#',
+	'account.php' => '#^/user/(?<slug>.+)$#',
+	'account_setting.php' => '#^/settings$#',
+	'auth.php' => '#^/authorization$#',
+	'post.php' => '#^/post/(?<slug>.+)$#',
+	'post_create.php' => '#^/post/create$#',
+	'post_setting.php' => '#^/post/setting$#',
+	'reg.php' => '#^/registration$#',
+	'404.php' => '#^/404$#',
+	'500.php' => '#^/500$#'
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
@@ -60,12 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				{
 					$sql = 'DELETE FROM likes WHERE user_id = :user_id AND post_id = :post_id';
 				}
-				$pdo->query($sql, [
+				DB->query($sql, [
 					'user_id' => $user_id,
 					'post_id' => $post_id
 				]);
 				$sql = 'SELECT COUNT(*) as count FROM likes WHERE post_id = :post_id';
-				echo $pdo->query($sql, ['post_id' => $post_id])[0]['count'];
+				echo DB->query($sql, ['post_id' => $post_id])->getOne()['count'];
 				break;
 			case 'post_favorite_select':
 				$user_id = (int)$user_data['id'];
@@ -75,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				} else {
 					$sql = 'DELETE FROM posts_favorites WHERE user_id = :user_id AND post_id = :post_id';
 				}
-				$pdo->query($sql, ['user_id' => $user_id, 'post_id' => $post_id]);
+				DB->query($sql, ['user_id' => $user_id, 'post_id' => $post_id]);
 				break;
 		}
 	}
@@ -83,10 +86,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 }
 
 require_once get_page($pages, $uri);
-
-
-//}
-//catch (\Throwable $th)
-//{
-//	header('Location: 500');
-//}

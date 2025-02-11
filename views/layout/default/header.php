@@ -1,6 +1,5 @@
 <?php
-$sql = 'SELECT * FROM tags';
-$res = $pdo->query($sql);
+$res = DB->query( 'SELECT * FROM tags')->getAll();
 $tags = '';
 foreach ($res as $row)
 {
@@ -30,8 +29,8 @@ foreach ($res as $row)
 							id="inlineFormInput"
 							placeholder="Поиск">
 					<button class="input-group-text border-0" type="submit">
-						<svg width="16" height="16">
-							<use xlink:href="#search"></use>
+						<svg width="16" height="16"  fill="currentColor" viewBox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 						</svg>
 					</button>
 				</div>
@@ -44,46 +43,18 @@ foreach ($res as $row)
 			</div>
 		<?php else: ?>
 			<div class="col-1 lh-1 text-body d-none d-sm-block">
-				<a href="/authorization" class="text-decoration-none small text-dark">вход</a> / <a href="/registration"
+				<a href="../../../public/index.php" class="text-decoration-none small text-dark">вход</a> / <a href="../../../public/index.php"
 						class="text-decoration-none small text-dark">регистрация</a>
 			</div>
 		<?php endif; ?>
 		<div class="col-1 d-block d-sm-none">
 
-			<button class="btn p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-					aria-controls="offcanvasNavbar">
-				<svg width="35" height="35">
-					<use xlink:href="#navbar"></use>
+			<button class="btn p-0" type="button" id="buttonNav">
+				<svg width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd"
+							d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path>
 				</svg>
 			</button>
-
-			<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-					aria-labelledby="offcanvasNavbarLabel">
-				<div class="offcanvas-header">
-					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
-				</div>
-				<div class="offcanvas-body">
-					<div class="p-3">
-						<div class="list-group list-group-flush mb-3">
-							<?php if ($user_data['auth']): ?>
-								<a href="/user/<?=$user_data['username']?>"
-										class="list-group-item rounded-3">аккаунт</a>
-								<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
-								<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
-								<a href="/settings" class="list-group-item rounded-3">настройки</a>
-							<?php else: ?>
-								<a href="" class="list-group-item rounded-3">войти</a>
-								<a href="/authorization" class="text-decoration-none small text-dark">вход</a> / <a
-										href="/registration"
-										class="text-decoration-none small text-dark">регистрация</a>
-							<?php endif; ?>
-						</div>
-						<div class="list-group list-group-flush d-block p-0 text-start">
-							<?=$tags?>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </header>
@@ -94,7 +65,7 @@ foreach ($res as $row)
 			<?php if ($user_data['auth']): ?>
 				<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
 				<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
-				<a href="/settings" class="list-group-item rounded-3">настройки</a>
+				<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 			<?php endif; ?>
 		</div>
 		<div class="list-group list-group-flush d-block mt-1 text-start">

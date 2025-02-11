@@ -1,7 +1,7 @@
 <?php
 header("HTTP/1.0 404 Not Found");
 $title = "404 Not Found";
-require_once LAYOUT . 'empty/header.php';
+require_once LAYOUT . '/empty/header.php';
 ?>
 
 <main class="row error min-vh-100 justify-content-center">
@@ -10,4 +10,4 @@ require_once LAYOUT . 'empty/header.php';
 </main>
 
 <?php
-require_once LAYOUT . 'empty/footer.php';
+require_once LAYOUT . '/empty/footer.php';
