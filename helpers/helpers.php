@@ -1,27 +1,16 @@
 <?php
-function my_mb_ucfirst($str) {
-	$fc = mb_strtoupper(mb_substr($str, 0, 1));
-	return $fc.mb_substr($str, 1);
+function abort($error): void
+{
+	http_response_code($error);
+	header("Location: " . '/' .$error);
+	die;
 }
-
-//function DeleteCookie($name): void
-//{
-//	if (isset($_COOKIE[$name])) {
-//		setcookie($name, '', time());
-//		unset($_COOKIE[$name]);
-//	}
-//}
-//function CreateCookie($name, $text): void
-//{
-//	setcookie($name, $text, time() + 5);
-//	$_COOKIE[$name] = $text;
-//}
 
 function get_page($pages, $uri): string
 {
 	foreach ($pages as $page => $pattern)
 	{
-		if (preg_match($pattern, $uri, $matches))
+		if (preg_match($pattern, $uri))
 		{
 			return VIEWS  . '/' . $page;
 		}
@@ -40,5 +29,7 @@ function get_component(string $component_file, $data): string
 function link_create($key, $var):string
 {
 	unset($_GET['page']);
-	return http_build_query(array_merge($_GET, [$key => $var]));
+	$uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
+	$uri = explode('?', $uri)[0];
+	return $uri . '?' .http_build_query(array_merge($_GET, [$key => $var]));
 }

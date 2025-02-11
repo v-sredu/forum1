@@ -50,4 +50,19 @@ class Database
 	{
 		return $this->pdo;
 	}
+	public function delete($string, $params) : void
+	{
+		$sql = 'DELETE FROM ' . $string;
+		$this->query($sql, $params);
+	}
+	public function insert($string, $params) : void
+	{
+		$sql = 'INSERT INTO ' . $string;
+		$this->query($sql, $params);
+	}
+	public function check($string, $params): bool {
+		$sql = 'SELECT 1 FROM ' . $string;
+		$res = $this->query($sql, $params)->getOne();
+		return (bool)$res;
+	}
 }

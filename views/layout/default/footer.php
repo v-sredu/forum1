@@ -50,7 +50,7 @@
 				<?php endif; ?>
 			</div>
 			<div class="list-group list-group-flush d-block p-0 text-start">
-				<?=$tags ?>
+				<?=$tags_link ?>
 			</div>
 		</div>
 	</div>

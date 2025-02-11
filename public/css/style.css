@@ -67,6 +67,7 @@ body {
 .active a, .active.disabled a {
 	background-color: var(--button-active);
 }
+
 .mw-500 {
 	max-width: 500px;
 }
@@ -75,10 +76,19 @@ svg {
 	color: var(--bs-secondary-color);
 }
 
-svg.select.like {
-	color: var(--icon-like-active);
+.select.like svg {
+	color: var(--icon-like-active) !important;
 }
 
-svg.select.bookmark {
+.select.bookmark svg{
 	color: var(--icon-bookmark-active);
+}
+
+.select.subscribe {
+	background-color: var(--bs-gray-100);
+	border-color: var(--bs-gray-100);
+}
+.profile .card-image-top {
+	background-size: cover !important;
+	height: 100px;
 }

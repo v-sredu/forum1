@@ -92,5 +92,4 @@ require_once LAYOUT . '/default/header.php';
 		]);?>
 	</main>
 <?php
-
 require_once LAYOUT . '/default/footer.php';

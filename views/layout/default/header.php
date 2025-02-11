@@ -1,9 +1,9 @@
 <?php
-$res = DB->query( 'SELECT * FROM tags')->getAll();
-$tags = '';
+$res = DB->query('SELECT * FROM tags')->getAll();
+$tags_link = '';
 foreach ($res as $row)
 {
-	$tags .= "<a href='?tag=$row[id]' class='list-group-item d-inline-block p-2 mb-1 rounded-4'>$row[name]</a>";
+	$tags_link .= "<a href='?tag=$row[id]' class='list-group-item d-inline-block p-2 mb-1 rounded-4'>$row[name]</a>";
 }
 ?>
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ foreach ($res as $row)
 							id="inlineFormInput"
 							placeholder="Поиск">
 					<button class="input-group-text border-0" type="submit">
-						<svg width="16" height="16"  fill="currentColor" viewBox="0 0 16 16">
+						<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 						</svg>
 					</button>
@@ -38,12 +38,13 @@ foreach ($res as $row)
 		</div>
 		<?php if ($user_data['auth']) : ?>
 			<div class="col-auto d-none d-sm-block">
-				<a href="" class="d-block text-decoration-none small rounded-2"
-						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar']?>') no-repeat transparent; background-size: cover;"></a>
+				<a href="/user/<?=$user_data['username']?>" class="d-block text-decoration-none small rounded-2"
+						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar'] ?>') no-repeat transparent; background-size: cover;"></a>
 			</div>
 		<?php else: ?>
 			<div class="col-1 lh-1 text-body d-none d-sm-block">
-				<a href="../../../public/index.php" class="text-decoration-none small text-dark">вход</a> / <a href="../../../public/index.php"
+				<a href="../../../public/index.php" class="text-decoration-none small text-dark">вход</a> / <a
+						href="../../../public/index.php"
 						class="text-decoration-none small text-dark">регистрация</a>
 			</div>
 		<?php endif; ?>
@@ -69,7 +70,7 @@ foreach ($res as $row)
 			<?php endif; ?>
 		</div>
 		<div class="list-group list-group-flush d-block mt-1 text-start">
-			<?=$tags?>
+			<?=$tags_link ?>
 		</div>
 	</div>
 
