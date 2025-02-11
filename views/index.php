@@ -28,14 +28,29 @@ foreach ($res as $row)
 
 if (isset($_GET['tag']))
 {
+	$tag = $_GET['tag'];
 	$sql = 'SELECT users.username, users.avatar, users.id as user_id, posts.* FROM posts JOIN users ON users.id = posts.user_id JOIN posts_tags ON posts_tags.post_id = posts.id WHERE posts_tags.tag_id = :tag LIMIT :page_size OFFSET :page_slice';
 	$res = DB->bind_value_int($sql, [
 		'page_slice' => $page_slice,
 		'page_size' => POST_COUNT,
-		'tag' => $_GET['tag']
+		'tag' => $tag
 	])->getAll();
 	$sql = 'SELECT COUNT(*) as count FROM posts_tags WHERE tag_id = :tag';
-	$post_all = DB->query($sql, ['tag' => $_GET['tag']])->getOne()['count'];
+	$post_all = DB->query($sql, ['tag' => $tag])->getOne()['count'];
+
+}
+elseif (isset($_GET['key_words']))
+{
+	$key_words = $_GET['key_words'];
+	$sql = 'SELECT users.username, users.avatar, users.id as user_id, posts.* FROM posts JOIN users ON users.id = posts.user_id WHERE MATCH (posts.title, posts.content) AGAINST (:key_words IN NATURAL LANGUAGE MODE) LIMIT :page_size OFFSET :page_slice';
+	$res = DB->getPdo()->prepare($sql);
+	$res->bindValue('page_slice', $page_slice, PDO::PARAM_INT);
+	$res->bindValue('page_size', POST_COUNT, PDO::PARAM_INT);
+	$res->bindValue('key_words', $key_words, PDO::PARAM_STR);
+	$res->execute();
+	$res = $res->fetchAll();
+	$sql = 'SELECT COUNT(*) as count FROM posts WHERE MATCH (posts.title, posts.content) AGAINST (:key_words IN NATURAL LANGUAGE MODE)';
+	$post_all = DB->query($sql, ['key_words' => $_GET['key_words']])->getOne()['count'];
 }
 else
 {

@@ -22,7 +22,7 @@ foreach ($res as $row)
 			<a href="/" class="d-block d-sm-none text-decoration-none font-monospace fw-bold fs-3 text-body">F</a>
 		</div>
 		<div class="col-7 col-md-5">
-			<form action="" method="GET">
+			<form action="/" method="GET">
 				<label class="visually-hidden" for="inlineFormInput">Поиск</label>
 				<div class="input-group shadow-sm rounded-3">
 					<input type="text" class="form-control border-0 shadow-none bg-body-secondary" name="key_words"

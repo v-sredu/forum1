@@ -45,4 +45,9 @@ class Database
 	{
 		return $this->stmt->fetchAll(PDO::FETCH_COLUMN);
 	}
+
+	public function getPdo(): PDO
+	{
+		return $this->pdo;
+	}
 }
