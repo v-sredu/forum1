@@ -1,4 +1,6 @@
 <?php
+ob_start();
+$user_data = $_COOKIE['user'] ?? 0;
 $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
 $uri = explode('?', $uri)[0];
 preg_match('#^/user/(?<slug>.+)$#', $uri, $match);
@@ -18,7 +20,7 @@ $posts_count = DB->query($sql, ['user_id' => $account_data['id']])->getOne()['co
 $sql = 'SELECT COUNT(*) as count FROM users_subscribers WHERE users_subscribers.user_id = :user_id';
 $users_subscribers_count = DB->query($sql, ['user_id' => $account_data['id']])->getOne()['count'];
 
-if ($user_data['auth'] && $account_data['id'] !== $user_data['id'])
+if (!empty($user_data['auth']) && $account_data['id'] !== $user_data['id'])
 {
 	$sql = 'SELECT 1 FROM users_subscribers WHERE users_subscribers.user_id = :user_id AND users_subscribers.subscriber_id = :subscriber_id';
 	$signed = DB->query($sql, [
@@ -31,7 +33,6 @@ else
 	$signed = false;
 }
 
-require_once LAYOUT . '/default/header.php';
 ?>
 	<main class="col wrapper">
 
@@ -47,7 +48,7 @@ require_once LAYOUT . '/default/header.php';
 					<div class="profile-info w-100">
 						<div class="d-flex justify-content-around justify-content-sm-between w-100">
 							<h2 class="fs-4"><?=$account_data['name'] . ' ' . $account_data['surname']?></h2>
-							<?php if (!($user_data['auth'] && $account_data['id'] === $user_data['id'])) : ?>
+							<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
 								<button class="subscribe <?=($signed) ? 'select' : ''?> btn btn-sm btn-info p-1 d-none d-sm-block"
 										data-account-id="<?=$account_data['id']?>"
 										data-type-post="subscribe" data-select>
@@ -60,7 +61,7 @@ require_once LAYOUT . '/default/header.php';
 							<p class="text-muted ms-2 ms-sm-0"><?=$users_subscribers_count?>
 								подписчиков, <?=$posts_count?> поста</p>
 						</div>
-						<?php if (!($user_data['auth'] && $account_data['id'] === $user_data['id'])) : ?>
+						<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
 							<button class="subscribe <?=$signed ? 'select' : ''?> btn btn-sm btn-info d-sm-none d-block ms-auto"
 									data-account-id="<?=$account_data['id']?>" data-type-post="subscribe" data-select>
 								<?=$signed ? 'Вы подписаны' : 'Подписаться'?>
@@ -70,7 +71,7 @@ require_once LAYOUT . '/default/header.php';
 				</div>
 			</div>
 		</div>
-		<?php if ($user_data['auth'] && $account_data['id'] === $user_data['id']) : ?>
+		<?php if (!empty($user_data['auth']) && $account_data['id'] === $user_data['id']) : ?>
 			<a href="/post/create" class="btn btn-outline-secondary w-100">Создать пост</a>
 		<?php
 		endif;
@@ -140,4 +141,6 @@ require_once LAYOUT . '/default/header.php';
 	</main>
 
 <?php
-require_once LAYOUT . '/default/footer.php';
+$content = ob_get_clean();
+$title = $username;
+return template(['content' => $content, 'title' => $title, 'user_data' => $user_data]);

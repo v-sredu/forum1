@@ -1,7 +1,8 @@
 <?php
-$title = 'Главная страница';
+ob_start();
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $page_slice = ($page - 1) * POST_COUNT;
+$user_data = $_COOKIE['user'] ?? 0;
 $sort = $_GET['sort'] ?? 0;
 
 $sql = 'SELECT COUNT(posts.id) as count, posts.id as post_id FROM posts JOIN likes ON likes.post_id = posts.id GROUP BY posts.id';
@@ -78,8 +79,6 @@ foreach ($res as $row)
 	$data[$row['id']]['comments'] = $comments[$row['id']] ?? 0;
 	$data[$row['id']]['tags'] = $tags[$row['id']] ?? [];
 }
-
-require_once LAYOUT . '/default/header.php';
 ?>
 	<main class="col p-4">
 		<?=get_component('cards.php', [
@@ -92,4 +91,6 @@ require_once LAYOUT . '/default/header.php';
 		]);?>
 	</main>
 <?php
-require_once LAYOUT . '/default/footer.php';
+$content = ob_get_clean();
+$title = 'Главная страница';
+return template(['content' => $content, 'title' => $title, 'user_data' => $user_data]);

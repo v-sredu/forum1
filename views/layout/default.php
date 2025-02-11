@@ -1,13 +1,13 @@
 <?php
 $res = DB->query('SELECT * FROM tags')->getAll();
-$tags_link = '';
+$tags = '';
 foreach ($res as $row)
 {
-	$tags_link .= "<a href='?tag=$row[id]' class='list-group-item d-inline-block p-2 mb-1 rounded-4'>$row[name]</a>";
+	$tags .= "<a href='?tag=$row[id]' class='list-group-item d-inline-block p-2 mb-1 rounded-4'>$row[name]</a>";
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<?=$user_data['theme']?>">
+<html lang="en" data-bs-theme="<?=$user_data['theme'] ?? 'light'?>">
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
@@ -36,10 +36,10 @@ foreach ($res as $row)
 				</div>
 			</form>
 		</div>
-		<?php if ($user_data['auth']) : ?>
+		<?php if (!empty($user_data['auth'])) : ?>
 			<div class="col-auto d-none d-sm-block">
 				<a href="/user/<?=$user_data['username']?>" class="d-block text-decoration-none small rounded-2"
-						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar'] ?>') no-repeat transparent; background-size: cover;"></a>
+						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar']?>') no-repeat transparent; background-size: cover;"></a>
 			</div>
 		<?php else: ?>
 			<div class="col-1 lh-1 text-body d-none d-sm-block">
@@ -63,15 +63,78 @@ foreach ($res as $row)
 <div class="container-xl min-vh-100 d-flex justify-content-between p-0">
 	<div class="d-none d-sm-block col-3 col-lg-2 p-3 border-end text-center">
 		<div class="d-lg-none d-block  list-group list-group-flush mb-3">
-			<?php if ($user_data['auth']): ?>
+			<?php if (!empty($user_data['auth'])): ?>
 				<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
 				<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
 				<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 			<?php endif; ?>
 		</div>
 		<div class="list-group list-group-flush d-block mt-1 text-start">
-			<?=$tags_link ?>
+			<?=$tags?>
 		</div>
 	</div>
 
 	<div class="col wrapper d-flex">
+
+		<?=$content?>
+
+		<div class="d-none d-lg-block col-2 p-3 border-start">
+			<div class="list-group list-group-flush text-center">
+				<?php if (!empty($user_data['auth'])): ?>
+					<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
+					<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
+					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="bg-body p-3">
+	<p class="text-center text-body-secondary">сделано с любовью</p>
+</footer>
+
+<!--modal-->
+<div class="modal fade bg-secondary bg-opacity-50 show invisible d-block" id="modalAuthWarning">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Сначала войдите в аккаунт</h1>
+				<button type="button" class="btn-close" id="buttonAuthWarning" aria-label="Закрыть"></button>
+			</div>
+			<div class="modal-body">
+				<a href="" class="text-muted text-decoration-none">Вход</a>
+				/
+				<a href="" class="text-muted text-decoration-none">Регистрация</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="modalNav">
+	<div class="offcanvas-header">
+		<button type="button" class="btn-close" id="buttonNav" aria-label="Закрыть"></button>
+	</div>
+	<div class="offcanvas-body">
+		<div class="p-3">
+			<div class="list-group list-group-flush mb-3">
+				<?php if (!empty($user_data['auth'])): ?>
+					<a href="/user/<?=$user_data['username']?>"
+							class="list-group-item rounded-3">аккаунт</a>
+					<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
+					<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
+					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
+				<?php else: ?>
+					<a href="" class="list-group-item rounded-3">вход</a>
+					<a href="" class="list-group-item rounded-3">регистрация</a>
+				<?php endif; ?>
+			</div>
+			<div class="list-group list-group-flush d-block p-0 text-start">
+				<?=$tags?>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/public/js/script.js"></script>
+</body>
+</html>

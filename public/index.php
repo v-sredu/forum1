@@ -7,24 +7,24 @@ require_once ROOT . '/core/Database.php';
 const DB = new Database();
 $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
 $uri = explode('?', $uri)[0];
-setcookie('auth', true, 0, '/');
-setcookie('id', 2, 0, '/');
+//setcookie('auth', true, 0, '/');
+//setcookie('id', 2, 0, '/');
 
-$user_data = [
+setcookie('user', json_encode([
+	'auth' => false,
+	'theme' => 'light',
+	'id' => 2,
+	'avatar' => '2.png'
+]), 23324234, '/');
+//
+$_COOKIE['user'] = [
 	'auth' => $_COOKIE['auth'] ?? false,
-	'theme' => 'light'
+	'theme' => 'light',
+	'id' => 2,
+	'avatar' => '2.png',
+	'username' => 'user2'
 ];
-
-if ($user_data['auth'])
-{
-	$id = $_COOKIE['id'];
-	$user_data += DB->query('SELECT * FROM users WHERE id = :id', ['id' => $id])->getOne();
-	if (empty($user_data['avatar']))
-	{
-		$user_data['avatar'] = 'none.jpg';
-	}
-}
-
+//setcookie('user', 0, time() -23);
 $pages = [
 	'index.php' => '#^/$#',
 	'account.php' => '#^/user/(?<slug>.+)$#',
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				$params = [
 					'user_id' => (int)$data['accountId'],
 					'subscriber_id' => (int)$data['userId']
-					];
+				];
 				$isSelect = DB->check('users_subscribers WHERE user_id = :user_id AND subscriber_id = :subscriber_id', $params);
 				if ($isSelect)
 				{
@@ -104,4 +104,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	exit;
 }
 
-require_once get_page($pages, $uri);
+echo get_page($pages, $uri);
