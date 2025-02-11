@@ -1,24 +1,12 @@
 <?php if ($post_all>0): ?>
 	<div class="cards-block">
-		<div class="d-flex align-items-center mb-2">
-			<div class="border-top w-100">
-			</div>
-			<div class="btn-group">
-				<button class="btn dropdown-toggle btn-sm border-0" type="button" id="buttonSort">
-					Сортировать по:
-				</button>
-				<ul class="dropdown-menu border-0 shadow-sm" id="modalSort">
-					<li><a class="dropdown-item small"
-								href="<?=link_create('sort', 'date')?>">По дате</a></li>
-					<li><a class="dropdown-item small"
-								href="<?=link_create('sort', 'likes')?>">По лайкам</a></li>
-					<li><a class="dropdown-item small"
-								href="<?=link_create('sort', 'views')?>">По просмотрам</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-
+		<?=get_component('buttons_sort.php', [
+			'data' => [
+				'date' => 'По дате',
+				'likes' => 'По просмотрам',
+				'views' => 'По лайкам'
+			]
+		]);?>
 		<div class="cards mb-4 d-flex flex-column gap-3">
 			<?php
 			if (!empty($sort) && in_array($sort, [
@@ -134,28 +122,9 @@
 				</div>
 			<?php endforeach; ?>
 		</div>
-
-		<?php
-		$total_page = ceil($post_all / POST_COUNT);
-		$start_page = max(1, $page - 2);
-		$end_page = min($total_page, $page + 2);
-		?>
-		<ul class="pagination justify-content-end">
-			<li class="page-item <?=($page<=1) ? 'disabled' : ''?>">
-				<a href="<?=link_create('page', $page - 1)?>"
-						class="page-link text-body border-0 border-end">Назад</a>
-			</li>
-			<?php for ($i = $start_page; $i<=$end_page; $i++) : ?>
-				<li class="page-item <?=($page === $i) ? 'active disabled' : ''?> "><a
-							href="<?=link_create('page', $i)?>"
-							class="page-link text-body border-top-0 border-bottom-0">
-						<?=$i?>
-					</a></li>
-			<?php endfor; ?>
-			<li class="page-item <?=($page>=$total_page) ? 'disabled' : ''?>">
-				<a href="<?=link_create('page', $page + 1)?>"
-						class="page-link text-body border-0 border-end">Вперед</a>
-			</li>
-		</ul>
+		<?=get_component('buttons_navigation.php', [
+			'post_all' => $post_all,
+			'page' => $page
+		]);?>
 	</div>
 <?php endif;

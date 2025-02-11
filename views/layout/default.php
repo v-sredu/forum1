@@ -64,8 +64,8 @@ foreach ($res as $row)
 	<div class="d-none d-sm-block col-3 col-lg-2 p-3 border-end text-center">
 		<div class="d-lg-none d-block  list-group list-group-flush mb-3">
 			<?php if (!empty($user_data['auth'])): ?>
-				<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
-				<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
+				<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
+				<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
 				<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 			<?php endif; ?>
 		</div>
@@ -81,8 +81,8 @@ foreach ($res as $row)
 		<div class="d-none d-lg-block col-2 p-3 border-start">
 			<div class="list-group list-group-flush text-center">
 				<?php if (!empty($user_data['auth'])): ?>
-					<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
-					<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
+					<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
+					<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
 					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 				<?php endif; ?>
 			</div>
@@ -121,8 +121,8 @@ foreach ($res as $row)
 				<?php if (!empty($user_data['auth'])): ?>
 					<a href="/user/<?=$user_data['username']?>"
 							class="list-group-item rounded-3">аккаунт</a>
-					<a href="/posts/favourites" class="list-group-item rounded-3">избранное</a>
-					<a href="/posts/favourites-users" class="list-group-item rounded-3">подписки</a>
+					<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
+					<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
 					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 				<?php else: ?>
 					<a href="" class="list-group-item rounded-3">вход</a>

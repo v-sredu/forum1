@@ -28,14 +28,16 @@ $_COOKIE['user'] = [
 $pages = [
 	'index.php' => '#^/$#',
 	'account.php' => '#^/user/(?<slug>.+)$#',
-	'account_setting.php' => '#^/settings$#',
-	'auth.php' => '#^/authorization$#',
-	'post.php' => '#^/post/(?<slug>.+)$#',
-	'post_create.php' => '#^/post/create$#',
-	'post_setting.php' => '#^/post/setting$#',
-	'reg.php' => '#^/registration$#',
+//	'account_setting.php' => '#^/settings$#',
+//	'auth.php' => '#^/authorization$#',
+//	'post.php' => '#^/post/(?<slug>.+)$#',
+//	'post_create.php' => '#^/post/create$#',
+//	'post_setting.php' => '#^/post/setting$#',
+	'posts_favorites.php' => '#^/posts/favorite$#',
+	'subscriptions.php' => '#^/subscriptions$#',
+//	'reg.php' => '#^/registration$#',
 	'404.php' => '#^/404$#',
-	'500.php' => '#^/500$#'
+//	'500.php' => '#^/500$#'
 ];
 
 //ajax
