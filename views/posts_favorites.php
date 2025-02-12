@@ -1,5 +1,5 @@
 <?php
-if (empty($_COOKIE['auth']))
+if (empty($_COOKIE['user']))
 {
 	abort(404);
 }

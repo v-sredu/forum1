@@ -1,5 +1,19 @@
 <?php
 session_start();
+setcookie('user', json_encode([
+	'auth' => true,
+	'theme' => 'light',
+	'id' => 2,
+	'avatar' => '2.png'
+]), 23324234, '/');
+
+$_COOKIE['user'] = [
+	'auth' => true,
+	'theme' => 'light',
+	'id' => 2,
+	'avatar' => '2.png',
+	'username' => 'user2'
+];
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT . '/helpers/helpers.php';
 require_once ROOT . '/core/Database.php';
@@ -10,20 +24,6 @@ $uri = explode('?', $uri)[0];
 //setcookie('auth', true, 0, '/');
 //setcookie('id', 2, 0, '/');
 
-setcookie('user', json_encode([
-	'auth' => false,
-	'theme' => 'light',
-	'id' => 2,
-	'avatar' => '2.png'
-]), 23324234, '/');
-//
-$_COOKIE['user'] = [
-	'auth' => $_COOKIE['auth'] ?? false,
-	'theme' => 'light',
-	'id' => 2,
-	'avatar' => '2.png',
-	'username' => 'user2'
-];
 //setcookie('user', 0, time() -23);
 $pages = [
 	'index.php' => '#^/$#',
