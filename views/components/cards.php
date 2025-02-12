@@ -45,7 +45,7 @@ if ($post_all>0):
 				}
 			}
 
-			if ($user_data['auth'])
+			if (!empty($user_data['auth']))
 			{
 				$sql = 'SELECT post_id FROM likes WHERE user_id = :user_id';
 				$posts_likes = DB->query($sql, [
