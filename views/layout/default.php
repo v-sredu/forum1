@@ -39,7 +39,7 @@ foreach ($res as $row)
 		<?php if (!empty($user_data['auth'])) : ?>
 			<div class="col-auto d-none d-sm-block">
 				<a href="/user/<?=$user_data['username']?>" class="d-block text-decoration-none small rounded-2"
-						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar']?>') no-repeat transparent; background-size: cover;"></a>
+						style="width: 35px; height: 35px; background: url('/public/img/avatars/<?=$user_data['avatar']?>') no-repeat center transparent; background-size: cover;"></a>
 			</div>
 		<?php else: ?>
 			<div class="col-1 lh-1 text-body d-none d-sm-block">

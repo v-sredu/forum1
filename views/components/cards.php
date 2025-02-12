@@ -1,15 +1,22 @@
-<?php if ($post_all>0): ?>
+<?php
+$post_all = count($cards_data);
+if ($post_all>0):
+	$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+	$page_slice = ($page - 1) * POST_COUNT;
+	$sort = $_GET['sort'] ?? 0;
+	$cards_data = array_slice($cards_data, $page_slice, POST_COUNT);
+	?>
 	<div class="cards-block">
 		<?=get_component('buttons_sort.php', [
 			'data' => [
 				'date' => 'По дате',
-				'likes' => 'По просмотрам',
-				'views' => 'По лайкам'
+				'likes' => 'По лайкам',
+				'views' => 'По просмотрам'
 			]
 		]);?>
 		<div class="cards mb-4 d-flex flex-column gap-3">
 			<?php
-			if (!empty($sort) && in_array($sort, [
+			if (in_array($sort, [
 					'date',
 					'likes',
 					'views'
@@ -26,7 +33,7 @@
 					case 'likes':
 						usort($cards_data, function($a, $b)
 						{
-							return $b['likes']<=>$a['likes'];
+							return $b['like_count']<=>$a['like_count'];
 						});
 						break;
 					case 'views':
@@ -71,14 +78,17 @@
 					<a class="mb-3 text-decoration-none d-block text-body" href="/post/<?=$card['id']?>">
 						<h3 class="card-title fs-5"><?=$card['title']?></h3>
 						<p class="card-text">
-							<?=$card['content']?>
+							<?=mb_substr($card['content'], 0,100)?>
 						</p>
 					</a>
 
 					<div class="tag-group mb-3 d-flex flex-wrap gap-2">
-						<?php foreach ($card['tags'] as $tag_id => $tag_name) : ?>
-							<a href="/?tag=<?=$tag_id?>"
-									class="text-decoration-none badge opacity-75 text-info-emphasis bg-info-subtle">#<?=$tag_name?></a>
+						<?php
+						$tags = json_decode($card['tags'] ?? '[]');
+						foreach ($tags as $tag) :
+							?>
+							<a href="/?tag=<?=$tag->id?>"
+									class="text-decoration-none badge opacity-75 text-info-emphasis bg-info-subtle">#<?=$tag->name?></a>
 						<?php endforeach; ?>
 					</div>
 
@@ -87,7 +97,7 @@
 						<button class="like <?=$post_is_like ? 'select' : ''?> btn border-0 p-0 text-muted d-flex align-items-center gap-1"
 								data-select
 								data-post-id="<?=$card['id']?>" data-type-post="post_like" type="button">
-							<span><?=$card['likes']?></span>
+							<span><?=$card['like_count']?></span>
 							<svg width="16" height="16"
 									fill="currentColor" viewBox="0 0 16 16">
 								<path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"></path>
@@ -95,7 +105,7 @@
 						</button>
 
 						<div class="text-decoration-none text-muted d-flex align-items-center gap-1">
-							<span><?=$card['comments']?></span>
+							<span><?=$card['comment_count']?></span>
 							<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 								<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
 							</svg>

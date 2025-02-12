@@ -9,35 +9,13 @@ $page_slice = ($page - 1) * POST_COUNT;
 $user_data = $_COOKIE['user'] ?? 0;
 $sort = $_GET['sort'] ?? 0;
 
-$sql = 'SELECT users_subscribers.user_id as id, users.username, users.avatar FROM users_subscribers JOIN users ON users.id = users_subscribers.user_id
-    WHERE users_subscribers.subscriber_id = :user_id
-	 LIMIT :page_size OFFSET :page_slice';
-$cards = DB->bind_value_int($sql, [
-	'page_size' => POST_COUNT,
-	'page_slice' => $page_slice,
-	'user_id' => $user_data['id']
-])->getAll();
-
-$sql = 'SELECT COUNT(posts.id) as count, posts.user_id as id FROM posts GROUP BY posts.user_id';
-$res = DB->query($sql)->getAll();
-$posts_count = [];
-foreach ($res as $post)
-{
-	$posts_count[$post['id']] = $post['count'];
-}
-$sql = 'SELECT COUNT(users_subscribers.subscriber_id) as count, users_subscribers.user_id as id FROM users_subscribers GROUP BY users_subscribers.user_id';
-$res = DB->query($sql)->getAll();
-$subscribers_count = [];
-foreach ($res as $subscriber)
-{
-	$subscribers_count[$subscriber['id']] = $subscriber['count'];
-}
-$sql = 'SELECT COUNT(*) as count FROM users_subscribers WHERE users_subscribers.subscriber_id = :user_id';
-$post_all = DB->query($sql, ['user_id' => $user_data['id']])->getOne()['count'];
-foreach ($cards as &$card) {
-	$card['subscribers_count'] = $subscribers_count[$card['id']] ?? 0;
-	$card['posts_count'] = $posts_count[$card['id']] ?? 0;
-}
+$sql = 'SELECT users.username, users.avatar, COUNT(DISTINCT users_subscribers.id) as subscriber_count, COUNT(DISTINCT posts.id) as post_count
+FROM users
+LEFT JOIN users_subscribers ON users_subscribers.user_id = users.id
+LEFT JOIN posts ON posts.user_id = users.id WHERE users_subscribers.subscriber_id = :user_id GROUP BY users.id';
+$data = DB->query($sql, ['user_id' =>$user_data['id']])->getAll();
+$post_all = count($data);
+$data = array_slice($data, $page_slice, POST_COUNT);
 ?>
 	<main class="col p-4">
 		<?php if ($post_all>0): ?>
@@ -50,7 +28,7 @@ foreach ($cards as &$card) {
 				]);?>
 				<div class="cards mb-4 d-flex flex-column gap-3">
 					<?php
-					if (!empty($sort) && in_array($sort, [
+					if (in_array($sort, [
 							'subscribers',
 							'posts'
 						]))
@@ -60,18 +38,18 @@ foreach ($cards as &$card) {
 							case 'subscribers':
 								usort($cards, function($a, $b)
 								{
-									return $b['subscribers_count']<=>$a['subscribers_count'];
+									return $b['subscriber_count']<=>$a['subscriber_count'];
 								});
 								break;
 							case 'posts':
 								usort($cards, function($a, $b)
 								{
-									return $b['posts_count']<=>$a['posts_count'];
+									return $b['post_count']<=>$a['post_count'];
 								});
 								break;
 						}
 					}
-					foreach ($cards as $card) : ?>
+					foreach ($data as $card) : ?>
 						<div class="cards mb-4 d-flex flex-column gap-3">
 							<div class="card border-0 rounded-4 p-2 mb-1">
 								<a href="/user/<?=$card['username']?>"
@@ -82,8 +60,8 @@ foreach ($cards as &$card) {
 									<div class="lh-2">
 										<p class="m-0 text-body"><?=$card['username']?></p>
 										<p class="m-0 text-body text-muted small">
-											<?=$card['subscribers_count'] ?>
-											подписчиков, <?= $card['posts_count'] ?>
+											<?=$card['subscriber_count'] ?>
+											подписчиков, <?= $card['post_count'] ?>
 											постов</p>
 									</div>
 								</div>
