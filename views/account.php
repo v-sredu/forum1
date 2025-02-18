@@ -67,7 +67,7 @@ else
 				</div>
 			</div>
 		</div>
-		<?php if (!empty($user_data['auth']) && $account_data['id'] === $user_data['id']) : ?>
+		<?php if (!empty($user_data['auth']) && ($account_data['id'] == $user_data['id'])) : ?>
 			<a href="/post/create" class="btn btn-outline-secondary w-100">Создать пост</a>
 		<?php
 		endif;
