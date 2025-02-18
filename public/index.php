@@ -13,7 +13,7 @@ setcookie('user', 0, time() - 23);
 $pages = [
 	'index.php' => '#^/$#',
 	'account.php' => '#^/user/(?<slug>.+)$#',
-	//	'account_setting.php' => '#^/settings$#',
+	'account_setting.php' => '#^/settings$#',
 	'auth.php' => '#^/auth$#',
 	//	'post.php' => '#^/post/(?<slug>.+)$#',
 	//	'post_create.php' => '#^/post/create$#',

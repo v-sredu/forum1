@@ -65,7 +65,7 @@ foreach ($res as $row)
 			<?php if (!empty($user_data['auth'])): ?>
 				<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
 				<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
-				<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
+				<a href="/settings" class="list-group-item rounded-3">настройки</a>
 			<?php endif; ?>
 		</div>
 		<div class="list-group list-group-flush d-block mt-1 text-start">
@@ -82,7 +82,7 @@ foreach ($res as $row)
 				<?php if (!empty($user_data['auth'])): ?>
 					<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
 					<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
-					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
+					<a href="/settings" class="list-group-item rounded-3">настройки</a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -122,7 +122,7 @@ foreach ($res as $row)
 							class="list-group-item rounded-3">аккаунт</a>
 					<a href="/posts/favorite" class="list-group-item rounded-3">избранное</a>
 					<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
-					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
+					<a href="/settings" class="list-group-item rounded-3">настройки</a>
 				<?php else: ?>
 					<a href="/auth" class="list-group-item rounded-3">вход</a>
 					<a href="/reg" class="list-group-item rounded-3">регистрация</a>
