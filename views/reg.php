@@ -1,57 +1,64 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="overflow-x-hidden">
+<?php
+ob_start();
+$user_data = $_COOKIE['user'] ?? 0;
+?>
+	<main class="row min-vh-100 mt-5 justify-content-center">
+		<div class="mw-500 col-11">
+			<div class="alert alert-danger d-none" role="alert">
+			</div>
+			<div class="form-control p-4 rounded-5 border-5 border-warning-subtle">
+				<form action="" method="get" class="form row flex-column gy-3" id="form" enctype="multipart/form-data">
+					<input type="hidden" name="typePost" value="reg">
+					<div class="col">
+						<label for="formFile" class="form-label">Выберите аватар</label>
+						<input type="hidden" name="MAX_FILE_SIZE" value="102400" />
+						<input class="form-control" name="file" type="file" id="formFile" accept=".jpg, .png">
+					</div>
+					<div class="col">
+						<label for="name" class="form-label fw-semibold">Имя</label>
+						<input type="text" name="name" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="name"
+								placeholder="name"
+								required>
+					</div>
+					<div class="col">
+						<label for="surname" class="form-label fw-semibold">Фамилия</label>
+						<input type="text" name="surname" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="surname"
+								placeholder="surname"
+								required>
+					</div>
+					<div class="col">
+						<label for="username" class="form-label fw-semibold">Никнейм</label>
+						<input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
+								placeholder="username"
+								required>
+					</div>
+					<div class="col">
+						<label for="password" class="form-label fw-semibold">Пароль</label>
+						<input type="text" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
+								placeholder="1234567890" required>
+					</div>
+					<div class="col">
+						<label for="repeatPassword" class="form-label fw-semibold">Повторите пароль</label>
+						<input type="text" name="repeatPassword" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="repeatPassword"
+								placeholder="1234567890" required>
+					</div>
+					<div class="col mt-5">
+						<input type="submit" class="btn btn-warning w-100 p-2" value="Регистрация">
+					</div>
+					<div class="col">
+						<p class="text-end">Есть аккаунт? <a class="text-decoration-none"
+									href="/auth">Войти</a></p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+<?php
+$content = ob_get_clean();
+$title = 'Регистрация';
 
-<main class="row min-vh-100 mt-5 justify-content-center">
-    <div class="mw-500 col-11">
-        <div class="form-control p-4 rounded-5 border-5 border-warning-subtle">
-            <div class="card-img-top mb-4"
-                 style="background: url(/img/form-header.gif) no-repeat center; background-size: contain; height: 200px"></div>
-            <form action="" method="post" class="form row flex-column gy-3">
-                <div class="col">
-                    <label for="email" class="form-label fw-semibold">Email</label>
-                    <input type="text" name="email" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="email"
-                           placeholder="email"
-                           required>
-                </div>
-                <div class="col">
-                    <label for="username" class="form-label fw-semibold">Имя юзера</label>
-                    <input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
-                           placeholder="имя юзера"
-                           required>
-                </div>
-                <div class="col">
-                    <label for="password" class="form-label fw-semibold">Пароль</label>
-                    <input type="password" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
-                           placeholder="1234567890" required>
-                    <div id="passwordHelpBlock" class="form-text">
-                        Ваш пароль должен состоять из 8-20 символов, содержать буквы и цифры и не должен содержать пробелов, специальных символов или эмодзи.
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="repeatPassword" class="form-label fw-semibold">Повторите пароль</label>
-                    <input type="password" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="repeatPassword"
-                           placeholder="1234567890" required>
-                </div>
-                <div class="col mt-5">
-                    <input type="submit" class="btn btn-warning w-100 p-2" value="Войти">
-                </div>
-                <div class="col">
-                    <p class="text-end">Нет аккаунта? <a class="text-decoration-none"
-                                                              href="/reg">зарегистрироваться</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-</main>
-
-<script src="/js/bootstrap.bundle.js"></script>
-<script src="/js/script.js"></script>
-</body>
-</html>
+return template([
+	'content' => $content,
+	'title' => $title,
+	'user_data' => $user_data
+], 'empty.php');

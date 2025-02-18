@@ -19,10 +19,6 @@ function toggleModal(button_link, modal_link, styles_toggle_array) {
 	}
 }
 
-toggleModal('#buttonNav', '#modalNav', ['show']);
-toggleModal('#buttonAuthWarning', '#modalAuthWarning', ['invisible']);
-toggleModal('#buttonSort', '#modalSort', ['show'])
-
 function selectButton(button) {
 	if (getCookie('auth')) {
 		let url = '/';
@@ -35,7 +31,6 @@ function selectButton(button) {
 		}
 		let type_post = data['typePost'];
 		data['userId'] = getCookie('id');
-		data = JSON.stringify(data);
 		xhr.open('POST', url, true);
 		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -49,6 +44,7 @@ function selectButton(button) {
 				}
 				if (is_select) {
 					button.classList.remove('select');
+					// button.classList.toggle('select');
 				} else {
 					button.classList.add('select');
 				}
@@ -63,6 +59,35 @@ function selectButton(button) {
 	}
 }
 
+function registration(form) {
+	let xhr = new XMLHttpRequest();
+	let formData = new FormData(form);
+	let file = form.querySelector("[name='file']");
+	if (file) {
+	formData.append('file', file.files['0']);
+	}
+	xhr.open('POST', '/', true);
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhr.onreadystatechange = function () {
+		if (xhr.status === 200) {
+			if (xhr.responseText === 'abort') {
+				let currentUrl = window.location.href.split('/');
+				window.location.href = currentUrl[0] + '//' + currentUrl[2];
+			}
+			let alert = document.querySelector("[role='alert']");
+			alert.innerHTML = 'Внимание! ' + xhr.responseText;
+			alert.classList.remove('d-none');
+		} else {
+			console.error('Ошибка:', xhr.statusText);
+		}
+	};
+	xhr.send(formData);
+}
+
+toggleModal('#buttonNav', '#modalNav', ['show']);
+toggleModal('#buttonAuthWarning', '#modalAuthWarning', ['invisible']);
+toggleModal('#buttonSort', '#modalSort', ['show'])
+
 //кнопки лайка и добавить в избранное
 let buttons_select = document.querySelectorAll('[data-select]');
 
@@ -71,3 +96,10 @@ buttons_select.forEach(button => {
 		selectButton(button);
 	});
 });
+
+let form = document.querySelector('#form');
+
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
+	registration(form);
+})

@@ -2,6 +2,8 @@
 define("ROOT", dirname(__DIR__));
 const VIEWS = ROOT . '/views';
 const LAYOUT = VIEWS . '/layout';
+
+const AVATARS = ROOT . '/public/img/avatars';
 const COMPONENTS = VIEWS . '/components';
 const DB_SETTINGS = [
 	'host' => 'MySQL-8.2',

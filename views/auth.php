@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="overflow-x-hidden">
-
+<?php
+ob_start();
+$user_data = $_COOKIE['user'] ?? 0;
+?>
 <main class="row min-vh-100 mt-5 justify-content-center">
     <div class="mw-500 col-11">
         <div class="form-control p-4 rounded-5 border-5 border-warning-subtle">
-            <div class="card-img-top mb-4"
-                 style="background: url(/img/form-header.gif) no-repeat center; background-size: contain; height: 200px"></div>
             <form action="" method="post" class="form row flex-column gy-3">
                 <div class="col">
-                    <label for="username" class="form-label fw-semibold">Имя юзера или email</label>
+                    <label for="username" class="form-label fw-semibold">Имя</label>
                     <input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
-                           placeholder="имя юзера"
+                           placeholder="имя юзера" min="3"
                            required>
                 </div>
                 <div class="col">
@@ -36,8 +28,12 @@
         </div>
     </div>
 </main>
+<?php
+$content = ob_get_clean();
+$title = 'Авторизация';
 
-<script src="/js/bootstrap.bundle.js"></script>
-<script src="/js/script.js"></script>
-</body>
-</html>
+return template([
+'content' => $content,
+'title' => $title,
+'user_data' => $user_data
+], 'empty.php');

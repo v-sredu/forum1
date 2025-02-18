@@ -43,9 +43,8 @@ foreach ($res as $row)
 			</div>
 		<?php else: ?>
 			<div class="col-1 lh-1 text-body d-none d-sm-block">
-				<a href="../../../public/index.php" class="text-decoration-none small text-dark">вход</a> / <a
-						href="../../../public/index.php"
-						class="text-decoration-none small text-dark">регистрация</a>
+				<a href="/auth" class="text-decoration-none small text-dark">вход</a> / <a
+						href="/reg" class="text-decoration-none small text-dark">регистрация</a>
 			</div>
 		<?php endif; ?>
 		<div class="col-1 d-block d-sm-none">
@@ -103,9 +102,9 @@ foreach ($res as $row)
 				<button type="button" class="btn-close" id="buttonAuthWarning" aria-label="Закрыть"></button>
 			</div>
 			<div class="modal-body">
-				<a href="" class="text-muted text-decoration-none">Вход</a>
+				<a href="/auth" class="text-muted text-decoration-none">Вход</a>
 				/
-				<a href="" class="text-muted text-decoration-none">Регистрация</a>
+				<a href="/reg" class="text-muted text-decoration-none">Регистрация</a>
 			</div>
 		</div>
 	</div>
@@ -125,8 +124,8 @@ foreach ($res as $row)
 					<a href="/subscriptions" class="list-group-item rounded-3">подписки</a>
 					<a href="../../../public/index.php" class="list-group-item rounded-3">настройки</a>
 				<?php else: ?>
-					<a href="" class="list-group-item rounded-3">вход</a>
-					<a href="" class="list-group-item rounded-3">регистрация</a>
+					<a href="/auth" class="list-group-item rounded-3">вход</a>
+					<a href="/reg" class="list-group-item rounded-3">регистрация</a>
 				<?php endif; ?>
 			</div>
 			<div class="list-group list-group-flush d-block p-0 text-start">
