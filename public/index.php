@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		{
 			case 'post_like':
 				$data = [
-					'user_id' => (int)$_POST['userId'],
+					'user_id' => (int)$_COOKIE['user']['id'],
 					'post_id' => (int)$_POST['postId']
 				];
 				$isSelect = DB->check('likes WHERE user_id = :user_id AND post_id = :post_id', $data);
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				break;
 			case 'post_favorite_select':
 				$params = [
-					'user_id' => (int)$_POST['userId'],
+					'user_id' => (int)$_COOKIE['user']['id'],
 					'post_id' => (int)$_POST['postId']
 				];
 				$isSelect = DB->check('posts_favorites WHERE user_id = :user_id AND post_id = :post_id', $params);
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 			case 'subscribe':
 				$params = [
 					'user_id' => (int)$_POST['accountId'],
-					'subscriber_id' => (int)$_POST['userId']
+					'subscriber_id' => (int)$_COOKIE['user']['id']
 				];
 				$isSelect = DB->check('users_subscribers WHERE user_id = :user_id AND subscriber_id = :subscriber_id', $params);
 				if ($isSelect)
@@ -91,11 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				$username = $_POST['username'];
 				$password = $_POST['password'];
 				$repeat_password = $_POST['repeatPassword'];
-				$message =checkForm($avatar, $name, $surname, $username, $password, $repeat_password);
-				if ($message) {
+				$message = checkForm($avatar, $name, $surname, $username, $password, $repeat_password);
+				if ($message)
+				{
 					echo $message;
 					break;
 				}
+				$isExist = DB->check('users WHERE username = :username', ['username' => $username]);
+				if ($isExist)
+				{
+					return 'Данный username существует';
+				}
+
 				$password = password_hash($password, PASSWORD_DEFAULT);
 				$sql = 'INSERT INTO users SET name=:name, surname=:surname, username=:username, password=:password';
 				DB->query($sql, [
@@ -121,6 +128,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				setcookie('user[id]', $id, 0, '/');
 				setcookie('user[avatar]', $avatar_name ?? 'none.jpg', 0, '/');
 				setcookie('user[username]', $username, 0, '/');
+				echo 'abort';
+				die;
+			case 'setting':
+				$avatar = $_FILES['file'];
+				$id = $_COOKIE['user']['id'];
+				$name = $_POST['name'];
+				$surname = $_POST['surname'];
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+				$repeat_password = $_POST['repeatPassword'];
+				$message = checkForm($avatar, $name, $surname, $username, $password, $repeat_password);
+				if ($message)
+				{
+					echo $message;
+					break;
+				}
+				$password = password_hash($password, PASSWORD_DEFAULT);
+				$sql = 'UPDATE users SET name=:name, surname=:surname, username=:username, password=:password WHERE id=:id';
+				DB->query($sql, [
+					'id' => $id,
+					'name' => $name,
+					'surname' => $surname,
+					'username' => $username,
+					'password' => $password
+				]);
+				setcookie('user[username]', $username, 0, '/');
+
+				if (!empty($avatar))
+				{
+					$avatar_name = $id . ($avatar['type'] === 'image/jpeg' ? '.jpg' : '.png');
+					if (move_uploaded_file($avatar['tmp_name'], AVATARS . '/' . $avatar_name))
+					{
+						DB->query($sql, [
+							'id' => $id,
+							'avatar' => $avatar_name
+						]);
+						setcookie('user[avatar]', $avatar_name, 0, '/');
+					}
+				}
 				echo 'abort';
 				die;
 		}

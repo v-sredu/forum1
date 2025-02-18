@@ -5,8 +5,11 @@ if (empty($_COOKIE['user']))
 }
 ob_start();
 $user_data = $_COOKIE['user'] ?? 0;
+$user = DB->query('SELECT name, surname, username FROM users WHERE id=:id', ['id' => $user_data['id']])->getOne();
 ?>
         <div class="form-control p-4 m-4 rounded-4">
+			<div class="alert alert-danger d-none" role="alert">
+			</div>
             <form action="" method="post" class="form row flex-column gy-3" id="formUserData">
 				<input type="hidden" name="typePost" value="setting">
 				<div class="col">
@@ -17,19 +20,19 @@ $user_data = $_COOKIE['user'] ?? 0;
 				<div class="col">
 					<label for="name" class="form-label">Имя</label>
 					<input type="text" name="name" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="name"
-							placeholder="name"
+							placeholder="name" value="<?= $user['name'] ?>"
 							required>
 				</div>
 				<div class="col">
 					<label for="surname" class="form-label">Фамилия</label>
 					<input type="text" name="surname" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="surname"
-							placeholder="surname"
+							placeholder="surname" value="<?= $user['surname'] ?>"
 							required>
 				</div>
 				<div class="col">
 					<label for="username" class="form-label">Никнейм</label>
 					<input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
-							placeholder="username"
+							placeholder="username" value="<?= $user['username'] ?>"
 							required>
 				</div>
 				<div class="col">
@@ -50,7 +53,7 @@ $user_data = $_COOKIE['user'] ?? 0;
 
 <?php
 $content = ob_get_clean();
-$title = 'Избранное';
+$title = 'Настройки';
 
 return template([
 	'content' => $content,

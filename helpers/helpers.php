@@ -22,10 +22,8 @@ function checkForm($avatar, $name, $surname, $username, $password, $repeat_passw
 		return 'Не все поля заполнены';
 	}
 
-	$isExist = DB->check('users WHERE username = :username', ['username' => $username]);
-	if ($isExist)
-	{
-		return 'Данный username существует';
+	if (!preg_match('/^[-+0-9a-zA-Z!@#_$%^&*(),.?":{}|<=>]+$/', $username)) {
+		return 'Username должен содержать только буквы латинского алфавита, цифры и специальные символы';
 	}
 
 	if (!preg_match('/^[-+0-9a-zA-Z!@#_$%^&*(),.?":{}|<=>]+$/', $password))

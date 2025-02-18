@@ -29,7 +29,6 @@ function selectButton(button) {
 		Object.entries(data).forEach(([key, value]) => {
 			formData.append(key, value);
 		});
-		formData.append('userId', getCookie('user[id]'));
 		xhr.open('POST', '/', true);
 		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		xhr.onreadystatechange = function () {
