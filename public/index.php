@@ -8,8 +8,6 @@ require_once ROOT . '/core/Database.php';
 const DB = new Database();
 $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
 $uri = explode('?', $uri)[0];
-//setcookie('auth', true, 0, '/');
-//setcookie('id', 2, 0, '/');
 
 setcookie('user', 0, time() - 23);
 $pages = [
@@ -32,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
 		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
 	{
-		$json = file_get_contents('php://input');
 		switch ($_POST['typePost'])
 		{
 			case 'post_like':

@@ -94,8 +94,7 @@ if ($post_all>0):
 
 					<div class="d-flex gap-2 small">
 
-						<button class="like <?=$post_is_like ? 'select' : ''?> btn border-0 p-0 text-muted d-flex align-items-center gap-1"
-								data-select
+						<button class="like <?=$post_is_like ? 'select' : ''?> btn border-0 p-0 text-muted d-flex align-items-center gap-1"  id="select"
 								data-post-id="<?=$card['id']?>" data-type-post="post_like" type="button">
 							<span><?=$card['like_count']?></span>
 							<svg width="16" height="16"
@@ -118,8 +117,7 @@ if ($post_all>0):
 							</svg>
 						</div>
 
-						<button class="bookmark <?=$post_is_favorite ? 'select' : ''?> btn border-0 p-0 d-flex align-items-center gap-1 ms-auto"
-								data-select
+						<button class="bookmark <?=$post_is_favorite ? 'select' : ''?> btn border-0 p-0 d-flex align-items-center gap-1 ms-auto" id="select"
 								data-post-id="<?=$card['id']?>"
 								data-type-post="post_favorite_select"
 								type="button">

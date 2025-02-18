@@ -20,19 +20,17 @@ function toggleModal(button_link, modal_link, styles_toggle_array) {
 }
 
 function selectButton(button) {
-	if (getCookie('auth')) {
-		let url = '/';
+	if (getCookie('user[auth]')) {
 		let xhr = new XMLHttpRequest();
-		let dataAttributes = button.dataset;
-		let data = {};
-		let is_select = button.classList.contains('select');
-		for (let key in dataAttributes) {
-			data[key] = dataAttributes[key];
-		}
+		let formData = new FormData();
+		let data = button.dataset;
 		let type_post = data['typePost'];
-		data['userId'] = getCookie('id');
-		xhr.open('POST', url, true);
-		xhr.setRequestHeader('Content-Type', 'application/json');
+		let select = button.classList.contains('select');
+		Object.entries(data).forEach(([key, value]) => {
+			formData.append(key, value);
+		});
+		formData.append('userId', getCookie('user[id]'));
+		xhr.open('POST', '/', true);
 		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		xhr.onreadystatechange = function () {
 			if (xhr.status === 200) {
@@ -42,17 +40,14 @@ function selectButton(button) {
 				} else if (type_post === 'subscribe') {
 					button.innerHTML = xhr.responseText;
 				}
-				if (is_select) {
+				if (select) {
 					button.classList.remove('select');
-					// button.classList.toggle('select');
 				} else {
 					button.classList.add('select');
 				}
-			} else {
-				console.error('Ошибка:', xhr.statusText);
 			}
 		};
-		xhr.send(data);
+		xhr.send(formData);
 	} else {
 		let modal = document.querySelector('#modalAuthWarning');
 		modal.classList.toggle('invisible');
@@ -64,7 +59,7 @@ function registration(form) {
 	let formData = new FormData(form);
 	let file = form.querySelector("[name='file']");
 	if (file) {
-	formData.append('file', file.files['0']);
+		formData.append('file', file.files['0']);
 	}
 	xhr.open('POST', '/', true);
 	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -89,7 +84,7 @@ toggleModal('#buttonAuthWarning', '#modalAuthWarning', ['invisible']);
 toggleModal('#buttonSort', '#modalSort', ['show'])
 
 //кнопки лайка и добавить в избранное
-let buttons_select = document.querySelectorAll('[data-select]');
+let buttons_select = document.querySelectorAll('#select');
 
 buttons_select.forEach(button => {
 	button.addEventListener('click', function () {

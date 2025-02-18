@@ -45,9 +45,9 @@ else
 						<div class="d-flex justify-content-around justify-content-sm-between w-100">
 							<h2 class="fs-4"><?=$account_data['name'] . ' ' . $account_data['surname']?></h2>
 							<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
-								<button class="subscribe <?=($signed) ? 'select' : ''?> btn btn-sm btn-info p-1 d-none d-sm-block"
+								<button class="subscribe <?=($signed) ? 'select' : ''?> btn btn-sm btn-info p-1 d-none d-sm-block" id="select"
 										data-account-id="<?=$account_data['id']?>"
-										data-type-post="subscribe" data-select>
+										data-type-post="subscribe"t>
 									<?=($signed) ? 'Вы подписаны' : 'Подписаться'?>
 								</button>
 							<?php endif; ?>
@@ -59,7 +59,7 @@ else
 						</div>
 						<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
 							<button class="subscribe <?=$signed ? 'select' : ''?> btn btn-sm btn-info d-sm-none d-block ms-auto"
-									data-account-id="<?=$account_data['id']?>" data-type-post="subscribe" data-select>
+									data-account-id="<?=$account_data['id']?>" data-type-post="subscribe" id="select">
 								<?=$signed ? 'Вы подписаны' : 'Подписаться'?>
 							</button>
 						<?php endif; ?>
