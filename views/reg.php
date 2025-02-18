@@ -1,6 +1,5 @@
 <?php
 ob_start();
-$user_data = $_COOKIE['user'] ?? 0;
 ?>
 	<main class="row min-vh-100 mt-5 justify-content-center">
 		<div class="mw-500 col-11">
