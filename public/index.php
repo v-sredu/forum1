@@ -91,61 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				$username = $_POST['username'];
 				$password = $_POST['password'];
 				$repeat_password = $_POST['repeatPassword'];
-				if (empty($name) || empty($surname) || empty($username) || empty($password) || empty($repeat_password))
-				{
-					echo 'Не все поля заполнены';
-					break;
-				}
-
-				$isExist = DB->check('users WHERE username = :username', ['username' => $username]);
-				if ($isExist)
-				{
-					echo 'Данный username существует';
-					break;
-				}
-
-				if (!preg_match('/^[-+0-9a-zA-Z!@#_$%^&*(),.?":{}|<=>]+$/', $password))
-				{
-					echo 'Пароль должен содержать только буквы латинского алфавита, цифры и специальные символы';
-					break;
-				}
-
-				if (8>strlen($password) || strlen($password)>20)
-				{
-					echo "Длина пароля должна быть от 8 до 20 символов";
-					break;
-				}
-
-				if (!preg_match('/[A-Z]/', $password))
-				{
-					echo "Пароль должен содержать хотя бы одну заглавную букву";
-					break;
-				}
-
-				if (!preg_match('/[a-z]/', $password))
-				{
-					echo "Пароль должен содержать хотя бы одну строчную букву.";
-					break;
-				}
-
-				if (!preg_match('/\d/', $password))
-				{
-					$errors[] = "Пароль должен содержать хотя бы одну цифру.";
-				}
-
-				if (!preg_match('/[-+!@#_$%^&*(),.?":{}|<=>]/', $password))
-				{
-					echo "Пароль должен содержать хотя бы один специальный символ.";
-					break;
-				}
-				if ($password !== $repeat_password)
-				{
-					echo 'Пароли не совпадают';
-					break;
-				}
-				if (!empty($avatar) && $avatar['size']>102400)
-				{
-					echo 'Размер изображения должен быть меньше 100кб';
+				$message =checkForm($avatar, $name, $surname, $username, $password, $repeat_password);
+				if ($message) {
+					echo $message;
 					break;
 				}
 				$password = password_hash($password, PASSWORD_DEFAULT);
