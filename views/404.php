@@ -1,9 +1,8 @@
 <?php
 header("HTTP/1.0 404 Not Found");
-$user_data = $_COOKIE['user'] ?? 0;
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<?=$user_data['theme'] ?? 'light'?>">
+<html lang="en" data-bs-theme="light">
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">

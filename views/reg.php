@@ -15,30 +15,30 @@ $user_data = $_COOKIE['user'] ?? 0;
 						<input class="form-control" name="file" type="file" id="formFile" accept=".jpg, .png">
 					</div>
 					<div class="col">
-						<label for="name" class="form-label fw-semibold">Имя</label>
+						<label for="name" class="form-label">Имя</label>
 						<input type="text" name="name" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="name"
 								placeholder="name"
 								required>
 					</div>
 					<div class="col">
-						<label for="surname" class="form-label fw-semibold">Фамилия</label>
+						<label for="surname" class="form-label">Фамилия</label>
 						<input type="text" name="surname" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="surname"
 								placeholder="surname"
 								required>
 					</div>
 					<div class="col">
-						<label for="username" class="form-label fw-semibold">Никнейм</label>
+						<label for="username" class="form-label">Никнейм</label>
 						<input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
 								placeholder="username"
 								required>
 					</div>
 					<div class="col">
-						<label for="password" class="form-label fw-semibold">Пароль</label>
+						<label for="password" class="form-label">Пароль</label>
 						<input type="text" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
 								placeholder="1234567890" required>
 					</div>
 					<div class="col">
-						<label for="repeatPassword" class="form-label fw-semibold">Повторите пароль</label>
+						<label for="repeatPassword" class="form-label">Повторите пароль</label>
 						<input type="text" name="repeatPassword" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="repeatPassword"
 								placeholder="1234567890" required>
 					</div>

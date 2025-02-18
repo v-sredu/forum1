@@ -170,7 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 					}
 				}
 				setcookie('user[auth]', true, 0, '/');
-				setcookie('user[theme]', 'light', 0, '/');
 				setcookie('user[id]', $id, 0, '/');
 				setcookie('user[avatar]', $avatar_name ?? 'none.jpg', 0, '/');
 				setcookie('user[username]', $username, 0, '/');
