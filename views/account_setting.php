@@ -7,7 +7,7 @@ ob_start();
 $user_data = $_COOKIE['user'] ?? 0;
 ?>
         <div class="form-control p-4 m-4 rounded-4">
-            <form action="" method="post" class="form row flex-column gy-3">
+            <form action="" method="post" class="form row flex-column gy-3" id="formUserData">
 				<input type="hidden" name="typePost" value="setting">
 				<div class="col">
 					<label for="formFile" class="form-label">Выберите аватар</label>

@@ -54,7 +54,7 @@ function selectButton(button) {
 	}
 }
 
-function registration(form) {
+function submitUserData(form) {
 	let xhr = new XMLHttpRequest();
 	let formData = new FormData(form);
 	let file = form.querySelector("[name='file']");
@@ -92,9 +92,9 @@ buttons_select.forEach(button => {
 	});
 });
 
-let form = document.querySelector('#form');
+let form = document.querySelector('#formUserData');
 
 form.addEventListener('submit', (e) => {
 	e.preventDefault();
-	registration(form);
+	submitUserData(form);
 })

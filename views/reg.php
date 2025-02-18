@@ -7,7 +7,7 @@ $user_data = $_COOKIE['user'] ?? 0;
 			<div class="alert alert-danger d-none" role="alert">
 			</div>
 			<div class="form-control p-4 rounded-5 border-5 border-warning-subtle">
-				<form action="" method="get" class="form row flex-column gy-3" id="form" enctype="multipart/form-data">
+				<form action="" method="get" class="form row flex-column gy-3" id="formUserData" enctype="multipart/form-data">
 					<input type="hidden" name="typePost" value="reg">
 					<div class="col">
 						<label for="formFile" class="form-label">Выберите аватар</label>
