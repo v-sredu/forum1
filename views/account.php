@@ -44,7 +44,7 @@ else
 					<div class="profile-info w-100">
 						<div class="d-flex justify-content-around justify-content-sm-between w-100">
 							<h2 class="fs-4"><?=$account_data['name'] . ' ' . $account_data['surname']?></h2>
-							<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
+							<?php if (!empty($user_data['auth']) && ($account_data['id'] != $user_data['id'])) : ?>
 								<button class="subscribe <?=($signed) ? 'select' : ''?> btn btn-sm btn-info p-1 d-none d-sm-block" id="select"
 										data-account-id="<?=$account_data['id']?>"
 										data-type-post="subscribe"t>
@@ -57,7 +57,7 @@ else
 							<p class="text-muted ms-2 ms-sm-0"><?=$count['subscriber_count']?>
 								подписчиков, <?=$count['post_count']?> поста</p>
 						</div>
-						<?php if (!(!empty($user_data['auth']) && $account_data['id'] === $user_data['id'])) : ?>
+						<?php if (!empty($user_data['auth']) && ($account_data['id'] != $user_data['id'])) : ?>
 							<button class="subscribe <?=$signed ? 'select' : ''?> btn btn-sm btn-info d-sm-none d-block ms-auto"
 									data-account-id="<?=$account_data['id']?>" data-type-post="subscribe" id="select">
 								<?=$signed ? 'Вы подписаны' : 'Подписаться'?>
