@@ -7,7 +7,7 @@ ob_start();
 $user_data = $_COOKIE['user'] ?? 0;
 $user = DB->query('SELECT name, surname, username FROM users WHERE id=:id', ['id' => $user_data['id']])->getOne();
 ?>
-        <div class="form-control p-4 m-4 rounded-4">
+        <main class="form-control p-4 m-4 rounded-4">
 			<div class="alert alert-danger d-none" role="alert">
 			</div>
             <form action="" method="post" class="form row flex-column gy-3" id="formUserData">
@@ -49,7 +49,7 @@ $user = DB->query('SELECT name, surname, username FROM users WHERE id=:id', ['id
                     <input type="submit" class="btn btn-warning p-2" value="сохранить">
                 </div>
             </form>
-        </div>
+        </main>
 
 <?php
 $content = ob_get_clean();
