@@ -59,5 +59,4 @@ $title = 'Регистрация';
 return template([
 	'content' => $content,
 	'title' => $title,
-	'user_data' => $user_data
 ], 'empty.php');
