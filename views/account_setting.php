@@ -46,6 +46,7 @@ $user = DB->query('SELECT name, surname, username FROM users WHERE id=:id', ['id
 							placeholder="1234567890" required>
 				</div>
                 <div class="col mt-4 text-end">
+					<button class="btn btn-outline-secondary p-2" type="button" id="exitAccount">Выйти</button>
                     <input type="submit" class="btn btn-warning p-2" value="сохранить">
                 </div>
             </form>

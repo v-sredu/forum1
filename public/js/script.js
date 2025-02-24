@@ -98,3 +98,15 @@ form.addEventListener('submit', (e) => {
 	e.preventDefault();
 	submitUserData(form);
 })
+
+let button_exit_account = document.querySelector('#exitAccount');
+button_exit_account.addEventListener('click', () =>
+{
+	document.cookie.split(';').forEach(cookie => {
+		let eqPos = cookie.indexOf('=');
+		let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+		document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+	});
+	let currentUrl = window.location.href.split('/');
+	window.location.href = currentUrl[0] + '//' + currentUrl[2];
+});
