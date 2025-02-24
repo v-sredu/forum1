@@ -4,16 +4,19 @@ $user_data = $_COOKIE['user'] ?? 0;
 ?>
 <main class="row min-vh-100 mt-5 justify-content-center">
     <div class="mw-500 col-11">
+		<div class="alert alert-danger d-none" role="alert">
+		</div>
         <div class="form-control p-4 rounded-5 border-5 border-warning-subtle">
-            <form action="" method="post" class="form row flex-column gy-3">
+            <form action="" method="post" class="form row flex-column gy-3" id="formUserData">
+				<input type="hidden" name="typePost" value="auth">
                 <div class="col">
-                    <label for="username" class="form-label fw-semibold">Имя</label>
+                    <label for="username" class="form-label">Никнейм</label>
                     <input type="text" name="username" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="username"
-                           placeholder="имя юзера" min="3"
+                           placeholder="ник" min="3"
                            required>
                 </div>
                 <div class="col">
-                    <label for="password" class="form-label fw-semibold">Пароль</label>
+                    <label for="password" class="form-label">Пароль</label>
                     <input type="password" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
                            placeholder="1234567890" required>
                 </div>
@@ -35,5 +38,4 @@ $title = 'Авторизация';
 return template([
 'content' => $content,
 'title' => $title,
-'user_data' => $user_data
 ], 'empty.php');

@@ -169,6 +169,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 				}
 				echo 'abort';
 				die;
+			case 'auth':
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+
+				$sql = 'SELECT password, id, avatar FROM users WHERE username = :username';
+				$user = DB->query($sql, ['username' => $username])->getOne();
+				if (empty($user)) {
+					echo 'Данного пользователя не существует';
+					break;
+				}
+				if (password_verify($password, $user['password'])) {
+				{
+					setcookie('user[auth]', true, 0, '/');
+					setcookie('user[id]', $user['id'], 0, '/');
+					setcookie('user[avatar]', $user['avatar'], 0, '/');
+					setcookie('user[username]', $username, 0, '/');
+					echo 'abort';
+					die;
+				}
+				} else
+					echo 'Неверный пароль';
+					break;
 		}
 	}
 	exit;

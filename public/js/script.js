@@ -82,7 +82,7 @@ toggleModal('#buttonNav', '#modalNav', ['show']);
 toggleModal('#buttonAuthWarning', '#modalAuthWarning', ['invisible']);
 toggleModal('#buttonSort', '#modalSort', ['show'])
 
-//кнопки лайка и добавить в избранное
+//кнопки лайка, добавить в избранное, подписаться
 let buttons_select = document.querySelectorAll('#select');
 
 buttons_select.forEach(button => {
@@ -91,6 +91,7 @@ buttons_select.forEach(button => {
 	});
 });
 
+// формы авторизации и регистрации
 let form = document.querySelector('#formUserData');
 
 form.addEventListener('submit', (e) => {
