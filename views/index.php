@@ -1,7 +1,14 @@
 <?php
 ob_start();
 $user_data = $_COOKIE['user'] ?? 0;
-$sql = 'SELECT
+$search = '';
+if (!empty($_GET['tag'])) {
+	$search = "WHERE tags.id = $_GET[tag]";
+}
+if (!empty($_GET['key_words'])) {
+	$search = "WHERE MATCH (posts.title, posts.content) AGAINST ('$_GET[key_words]' IN NATURAL LANGUAGE MODE)";
+}
+$sql = "SELECT
 posts.id,
 posts.title,
 posts.content,
@@ -11,13 +18,13 @@ users.username,
 users.avatar,
 COUNT(DISTINCT likes.id) AS like_count,
 COUNT(DISTINCT comments.id) AS comment_count,
-GROUP_CONCAT(DISTINCT tags.name SEPARATOR " ") AS tags,
+GROUP_CONCAT(DISTINCT tags.name SEPARATOR ' ') AS tags,
     (
         SELECT
             JSON_ARRAYAGG(
                 JSON_OBJECT(
-                    "name", tags.name,
-                    "id", tags.id
+                    'name', tags.name,
+                    'id', tags.id
                 )
             )
         FROM
@@ -32,7 +39,8 @@ LEFT JOIN comments ON posts.id = comments.post_id
 LEFT JOIN posts_tags ON posts.id = posts_tags.post_id
 LEFT JOIN tags ON posts_tags.tag_id = tags.id
 JOIN users ON posts.user_id = users.id
-GROUP BY posts.id';
+$search
+GROUP BY posts.id";
 $data = DB->query($sql)->getAll();
 ?>
 	<main class="col p-4">
