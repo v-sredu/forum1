@@ -40,7 +40,10 @@ JOIN users ON posts.user_id = users.id WHERE posts.id = :id GROUP BY posts.id';
 $post_data = DB->query($sql, ['id' => $post_id])->getOne();
 
 $sql = 'UPDATE posts SET views=:views WHERE id=:id';
-DB->query($sql, ['views' => $post_data['views'] + 1, 'id' => $post_id]);
+DB->query($sql, [
+	'views' => $post_data['views'] + 1,
+	'id' => $post_id
+]);
 
 if (!empty($user_data['auth']))
 {
@@ -62,29 +65,29 @@ else
 }
 
 ?>
-	<main class="w-100 p-4">
-		<div class="post bg-body p-4 mb-2 rounded-3">
+	<main class="w-100 p-2 p-sm-4">
+		<div class="post bg-body p-2 p-sm-4 mb-2 rounded-3">
 			<div class="user d-flex gap-3">
-				<a href="/user/<?= $post_data['username'] ?>" class="d-block text-decoration-none small rounded-2"
-						style="width: 40px; height: 40px; background: url('/public/img/avatars/<?= $post_data['avatar'] ?>') no-repeat transparent center; background-size: cover;"></a>
+				<a href="/user/<?=$post_data['username']?>" class="d-block text-decoration-none small rounded-2"
+						style="width: 40px; height: 40px; background: url('/public/img/avatars/<?=$post_data['avatar']?>') no-repeat transparent center; background-size: cover;"></a>
 				<div class="lh-1">
-					<p class="m-0 text-body"><?= $post_data['username'] ?></p>
-					<p class="text-muted small mt-2"><?= $post_data['date'] ?></p>
+					<p class="m-0 text-body"><?=$post_data['username']?></p>
+					<p class="text-muted small mt-2"><?=$post_data['date']?></p>
 				</div>
 			</div>
-			<h2 class="mb-4 font-monospace fw-bold fs-2"><?= $post_data['title'] ?></h2>
-			<div class="text mb-3">
-				<?= $post_data['content'] ?>
+			<h2 class="font-monospace fw-bold fs-4"><?=$post_data['title']?></h2>
+			<div class="text mt-3 text-break">
+				<?=$post_data['content']?>
 			</div>
-				<div class="tag-group mt-5 d-flex flex-wrap gap-2">
-					<?php
-					$tags = json_decode($post_data['tags'] ?? '[]');
-					foreach ($tags as $tag) :
-						?>
-						<a href="/?tag=<?=$tag->id?>"
-								class="text-decoration-none badge opacity-75 text-info-emphasis bg-info-subtle">#<?=$tag->name?></a>
-					<?php endforeach; ?>
-				</div>
+			<div class="tag-group mt-3 d-flex flex-wrap gap-2">
+				<?php
+				$tags = json_decode($post_data['tags'] ?? '[]');
+				foreach ($tags as $tag) :
+					?>
+					<a href="/?tag=<?=$tag->id?>"
+							class="text-decoration-none badge opacity-75 text-info-emphasis bg-info-subtle">#<?=$tag->name?></a>
+				<?php endforeach; ?>
+			</div>
 			<div class="d-flex gap-2 mt-3">
 				<button class="like <?=$post_is_like ? 'select' : ''?> btn border-0 p-0 text-muted d-flex align-items-center gap-1"
 						id="select"
@@ -121,207 +124,23 @@ else
 					</svg>
 				</button>
 			</div>
-
-			<div class="comments bg-body p-4 rounded-3">
-				<div class="w-100 btn btn-outline-secondary text-center small"
-						data-bs-toggle="collapse"
-						data-bs-target="#newCommentMain" role="button">
-					ответить
-				</div>
-				<div class="collapse mt-4" id="newCommentMain">
-					<form class="form-control border-0 p-0" action="" method="post">
-						<input type="hidden" value="main" name="parent_id">
-						<div class="form-floating">
-                            <textarea class="form-control shadow-none" name="comment"
-									maxlength="300" minlength="1" id="text"
-									required style="height: 100px"></textarea>
-							<label for="text">комментарий</label>
-						</div>
-						<div class="d-flex justify-content-end">
-							<input type="submit" class="btn text-warning small p-1" value="отправить">
-							<button class="btn text-secondary small p-1" type="button" data-bs-toggle="collapse"
-									data-bs-target="#newCommentMain">
-								отмена
-							</button>
-						</div>
-					</form>
-				</div>
-
-				<div class="comments-list mt-4">
-					<!--                        ///////////////////////////////-->
-					<div class="comment mt-1">
-						<div class="comment-header d-flex gap-3">
-							<a href="" class="d-block text-decoration-none small rounded-2"
-									style="width: 40px; height: 40px; background: url('/img/avatars/none.jpg') no-repeat transparent; background-size: cover;"></a>
-							<div class="lh-1">
-								<p class="m-0 text-body">username </p>
-								<p class="text-muted small mt-2">23:12 12 мая 2023</p>
-							</div>
-							<div class="ms-auto d-flex gap-1 align-items-center align-self-start">
-								<button type="button" class="btn border-0 p-0" data-bs-toggle="tooltip"
-										data-bs-placement="top" data-bs-title="Пожаловаться">
-									<img src="/img/icons/exclamation.svg" alt="complaint" width="20"
-											height="20">
-								</button>
-							</div>
-						</div>
-						<div class="comment-body">
-							<p class="m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab deleniti
-								dicta
-								distinctio enim et explicabo molestias officia omnis ullam vel!</p>
-						</div>
-						<div class="comment-footer row align-items-center">
-							<div class="col-6 col-sm-8 col-lg-10 border-bottom border-secondary-subtle"></div>
-							<button class="col-auto btn btn-sm border-0" type="button"
-									data-bs-toggle="collapse"
-									data-bs-target="#newComment1">Ответить
-							</button>
-							<div class="col border-bottom border-secondary-subtle"></div>
-						</div>
-
-						<div class="comments-list mt-1 ms-4">
-							<div class="comment mt-1">
-								<div class="collapse" id="newComment1">
-									<form class="form-control border-0 p-0" action="" method="post">
-										<input type="hidden" value="1" name="parent_id">
-										<div class="form-floating">
-                                                         <textarea class="form-control shadow-none" name="comment"
-																 maxlength="300" minlength="1" id="text"
-																 required style="height: 100px">
-                                                         </textarea>
-											<label for="text">комментарий</label>
-										</div>
-										<div class="d-flex justify-content-end">
-											<input type="submit" class="btn text-warning small p-1"
-													value="отправить">
-											<button class="btn text-secondary small p-1" type="button"
-													data-bs-toggle="collapse"
-													data-bs-target="#newComment1">
-												отмена
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<div class="comment mt-1">
-								<div class="comment-header d-flex gap-3">
-									<a href="" class="d-block text-decoration-none small rounded-2"
-											style="width: 40px; height: 40px; background: url('/img/avatars/none.jpg') no-repeat transparent; background-size: cover;"></a>
-									<div class="lh-1">
-										<p class="m-0 text-body">username </p>
-										<p class="text-muted small mt-2">23:12 12 мая 2023</p>
-									</div>
-									<div class="ms-auto d-flex gap-1 align-items-center align-self-start">
-										<button type="button" class="btn border-0 p-0" data-bs-toggle="tooltip"
-												data-bs-placement="top" data-bs-title="Пожаловаться">
-											<img src="/img/icons/exclamation.svg" alt="complaint" width="20"
-													height="20">
-										</button>
-									</div>
-								</div>
-								<div class="comment-body">
-									<p class="m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-										deleniti
-										dicta
-										distinctio enim et explicabo molestias officia omnis ullam vel!</p>
-								</div>
-								<div class="comment-footer row align-items-center">
-									<div class="col-6 col-sm-8 col-lg-10 border-bottom border-secondary-subtle"></div>
-									<button class="col-auto btn btn-sm border-0" type="button"
-											data-bs-toggle="collapse"
-											data-bs-target="#newComment1">Ответить
-									</button>
-									<div class="col border-bottom border-secondary-subtle"></div>
-								</div>
-								<div class="comments-list">
-									<div class="comment mt-1">
-										<div class="collapse" id="newComment1">
-											<form class="form-control border-0 p-0" action="" method="post">
-												<input type="hidden" value="1" name="parent_id">
-												<div class="form-floating">
-                                                         <textarea class="form-control shadow-none" name="comment"
-																 maxlength="300" minlength="1" id="text"
-																 required style="height: 100px">
-                                                         </textarea>
-													<label for="text">комментарий</label>
-												</div>
-												<div class="d-flex justify-content-end">
-													<input type="submit" class="btn text-warning small p-1"
-															value="отправить">
-													<button class="btn text-secondary small p-1" type="button"
-															data-bs-toggle="collapse"
-															data-bs-target="#newComment1">
-														отмена
-													</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--                                ///////////////////////-->
-							<div class="comment mt-1">
-								<div class="comment-header d-flex gap-3">
-									<a href="" class="d-block text-decoration-none small rounded-2"
-											style="width: 40px; height: 40px; background: url('/img/avatars/none.jpg') no-repeat transparent; background-size: cover;"></a>
-									<div class="lh-1">
-										<p class="m-0 text-body">username </p>
-										<p class="text-muted small mt-2">23:12 12 мая 2023</p>
-									</div>
-									<div class="ms-auto d-flex gap-1 align-items-center align-self-start">
-										<button type="button" class="btn border-0 p-0" data-bs-toggle="tooltip"
-												data-bs-placement="top" data-bs-title="Пожаловаться">
-											<img src="/img/icons/exclamation.svg" alt="complaint" width="20"
-													height="20">
-										</button>
-									</div>
-								</div>
-								<div class="comment-body">
-									<p class="m-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-										deleniti
-										dicta
-										distinctio enim et explicabo molestias officia omnis ullam vel!</p>
-								</div>
-								<div class="comment-footer row align-items-center">
-									<div class="col-6 col-sm-8 col-lg-10 border-bottom border-secondary-subtle"></div>
-									<button class="col-auto btn btn-sm border-0" type="button"
-											data-bs-toggle="collapse"
-											data-bs-target="#newComment1">Ответить
-									</button>
-									<div class="col border-bottom border-secondary-subtle"></div>
-								</div>
-								<div class="comments-list">
-									<div class="comment mt-1">
-										<div class="collapse" id="newComment1">
-											<form class="form-control border-0 p-0" action="" method="post">
-												<input type="hidden" value="1" name="parent_id">
-												<div class="form-floating">
-                                                         <textarea class="form-control shadow-none" name="comment"
-																 maxlength="300" minlength="1" id="text"
-																 required style="height: 100px">
-                                                         </textarea>
-													<label for="text">комментарий</label>
-												</div>
-												<div class="d-flex justify-content-end">
-													<input type="submit" class="btn text-warning small p-1"
-															value="отправить">
-													<button class="btn text-secondary small p-1" type="button"
-															data-bs-toggle="collapse"
-															data-bs-target="#newComment1">
-														отмена
-													</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--                            ///////////////////-->
-						</div>
-					</div>
-					<!--                        //////////////////////-->
-				</div>
+			<div class="comments-wrapper mt-2">
+			<?php if (!empty($user_data['auth']) && ($user_data['username'] === $post_data['username'])): ?>
+			<button class="btn btn-outline-danger w-100 p-0 mb-2" id="deletePost" data-post-id="<?= $post_data['id'] ?>">Удалить пост</button>
+				<?php
+				endif;
+				$sql = 'SELECT comments.id, comments.parent_id, comments.user_id, comments.text, comments.date, users.username, users.avatar FROM comments LEFT JOIN users ON users.id = comments.user_id WHERE comments.post_id = :post_id';
+				$comments = DB->query($sql, ['post_id' => $post_data['id']])->getAll();
+				?>
+			<div class="comments">
+				<?=get_component('comments.php', [
+						'comments' => $comments,
+						'main_id' => $post_data['id'],
+						'auth' => !empty($user_data['auth']),
+					'current_username' => $user_data['username'] ?? false
+					])?>
 			</div>
+			<div>
 	</main>
 <?php
 $content = ob_get_clean();

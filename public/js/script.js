@@ -10,12 +10,14 @@ function getCookie(name) {
 function toggleModal(button_link, modal_link, styles_toggle_array) {
 	let buttons = document.querySelectorAll(button_link);
 	let modal = document.querySelector(modal_link);
-	for (let button of buttons) {
-		button.addEventListener('click', () => {
-			for (let style of styles_toggle_array) {
-				modal.classList.toggle(style);
-			}
-		});
+	if (modal && buttons) {
+		for (let button of buttons) {
+			button.addEventListener('click', () => {
+				for (let style of styles_toggle_array) {
+					modal.classList.toggle(style);
+				}
+			});
+		}
 	}
 }
 
@@ -84,29 +86,125 @@ toggleModal('#buttonSort', '#modalSort', ['show'])
 
 //кнопки лайка, добавить в избранное, подписаться
 let buttons_select = document.querySelectorAll('#select');
-
-buttons_select.forEach(button => {
-	button.addEventListener('click', function () {
-		selectButton(button);
+if (buttons_select) {
+	buttons_select.forEach(button => {
+		button.addEventListener('click', function () {
+			selectButton(button);
+		});
 	});
-});
+}
 
 // формы авторизации и регистрации
 let form = document.querySelector('#formUserData');
-
-form.addEventListener('submit', (e) => {
-	e.preventDefault();
-	submitUserData(form);
-})
+if (form) {
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		submitUserData(form);
+	})
+}
 
 let button_exit_account = document.querySelector('#exitAccount');
-button_exit_account.addEventListener('click', () =>
-{
-	document.cookie.split(';').forEach(cookie => {
-		let eqPos = cookie.indexOf('=');
-		let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-		document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+if (button_exit_account) {
+	button_exit_account.addEventListener('click', () => {
+		document.cookie.split(';').forEach(cookie => {
+			let eqPos = cookie.indexOf('=');
+			let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+			document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+		});
+		let currentUrl = window.location.href.split('/');
+		window.location.href = currentUrl[0] + '//' + currentUrl[2];
 	});
-	let currentUrl = window.location.href.split('/');
-	window.location.href = currentUrl[0] + '//' + currentUrl[2];
-});
+}
+
+function replyComment() {
+	let buttons_reply_comment = document.querySelectorAll('.comment-reply.main');
+	if (buttons_reply_comment) {
+		buttons_reply_comment.forEach(button => {
+			let id = button.getAttribute('data-comment');
+			toggleModal(`.comment-reply[data-comment='${id}']`, `.reply[data-comment='${id}']`, ['d-none']);
+		});
+	}
+	let buttons_delete_comment = document.querySelectorAll('.comment-delete');
+	if (buttons_delete_comment) {
+		buttons_delete_comment.forEach(button => {
+			button.addEventListener('click', () => {
+				deleteComment(button);
+			})
+		});
+	}
+	let forms_comment = document.querySelectorAll('#commentForm');
+	if (forms_comment) {
+		forms_comment.forEach(form => {
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				if (getCookie('user[auth]')) {
+					sendComment(form);
+				} else {
+					let modal = document.querySelector('#modalAuthWarning');
+					modal.classList.toggle('invisible');
+				}
+			})
+		})
+	}
+}
+
+function sendComment(form) {
+	let xhr = new XMLHttpRequest();
+	let formData = new FormData(form);
+	formData.append('typePost', 'sendComment');
+	xhr.open('POST', '/', true);
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhr.onreadystatechange = function () {
+		if (xhr.status === 200) {
+			let body_comments = document.querySelector('.comments');
+			body_comments.innerHTML = xhr.responseText;
+			replyComment();
+		} else {
+			console.error('Ошибка:', xhr.statusText);
+		}
+	};
+	xhr.send(formData);
+}
+
+function deleteComment(button) {
+	let xhr = new XMLHttpRequest();
+	let formData = new FormData();
+	formData.append('typePost', 'deleteComment');
+	formData.append('comment_id', button.getAttribute('data-comment'));
+	formData.append('post_id', button.getAttribute('data-post-id'));
+	xhr.open('POST', '/', true);
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhr.onreadystatechange = function () {
+		if (xhr.status === 200) {
+			let body_comments = document.querySelector('.comments');
+			body_comments.innerHTML = xhr.responseText;
+			replyComment();
+		} else {
+			console.error('Ошибка:', xhr.statusText);
+		}
+	};
+	xhr.send(formData);
+}
+
+let button_delete_post = document.querySelector('#deletePost');
+if (button_delete_post) {
+	button_delete_post.addEventListener('click', () => {
+		let xhr = new XMLHttpRequest();
+		let formData = new FormData();
+		formData.append('typePost', 'deletePost');
+		formData.append('post_id', button_delete_post.getAttribute('data-post-id'));
+		xhr.open('POST', '/', true);
+		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		xhr.onreadystatechange = function () {
+			if (xhr.status === 200) {
+				let currentUrl = window.location.href.split('/');
+				window.location.href = currentUrl[0] + '//' + currentUrl[2];
+			} else {
+				console.error('Ошибка:', xhr.statusText);
+			}
+		};
+		xhr.send(formData);
+	});
+}
+
+replyComment();

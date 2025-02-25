@@ -15,7 +15,7 @@ $pages = [
 	'account.php' => '#^/user/(?<slug>.+)$#',
 	'account_setting.php' => '#^/settings$#',
 	'auth.php' => '#^/auth$#',
-		'post.php' => '#^/post/(?<slug>.+)$#',
+	'post.php' => '#^/post/(?<slug>.+)$#',
 	//	'post_create.php' => '#^/post/create$#',
 	//	'post_setting.php' => '#^/post/setting$#',
 	'posts_favorites.php' => '#^/posts/favorite$#',
@@ -175,22 +175,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
 				$sql = 'SELECT password, id, avatar FROM users WHERE username = :username';
 				$user = DB->query($sql, ['username' => $username])->getOne();
-				if (empty($user)) {
+				if (empty($user))
+				{
 					echo 'Данного пользователя не существует';
 					break;
 				}
-				if (password_verify($password, $user['password'])) {
+				if (password_verify($password, $user['password']))
 				{
-					setcookie('user[auth]', true, 0, '/');
-					setcookie('user[id]', $user['id'], 0, '/');
-					setcookie('user[avatar]', $user['avatar'], 0, '/');
-					setcookie('user[username]', $username, 0, '/');
-					echo 'abort';
-					die;
+					{
+						setcookie('user[auth]', true, 0, '/');
+						setcookie('user[id]', $user['id'], 0, '/');
+						setcookie('user[avatar]', $user['avatar'], 0, '/');
+						setcookie('user[username]', $username, 0, '/');
+						echo 'abort';
+						die;
+					}
 				}
-				} else
+				else
+				{
 					echo 'Неверный пароль';
-					break;
+				}
+				break;
+			case 'sendComment':
+				$parent_id = $_POST['parent_id'] == 'null' ? null : ((int)$_POST['parent_id']);
+				$post_id = (int)$_POST['post_id'];
+				$text = htmlspecialchars($_POST['text']);
+				$user_id = (int)$_COOKIE['user']['id'];
+				$date = date('Y-m-d');
+				$sql = 'INSERT INTO comments SET user_id=:user_id, parent_id=:parent_id, post_id=:post_id, text=:text, date=:date';
+				DB->query($sql, [
+					'parent_id' => $parent_id,
+					'post_id' => $post_id,
+					'user_id' => $user_id,
+					'text' => $text,
+					'date' => $date
+				]);
+				$sql = 'SELECT comments.id, comments.parent_id, comments.user_id, comments.text, comments.date, users.username, users.avatar FROM comments LEFT JOIN users ON users.id = comments.user_id WHERE comments.post_id = :post_id';
+				$comments = DB->query($sql, ['post_id' => $post_id])->getAll();
+				echo get_component('comments.php', [
+					'comments' => $comments,
+					'main_id' => $post_id,
+					'auth' => true,
+					'current_username' => $_COOKIE['user']['username']
+				]);
+				break;
+			case 'deleteComment':
+				$post_id = $_POST['post_id'];
+				$sql = 'DELETE FROM comments WHERE id=:id';
+				DB->query($sql, ['id' => $_POST['comment_id']]);
+				$sql = 'SELECT comments.id, comments.parent_id, comments.user_id, comments.text, comments.date, users.username, users.avatar FROM comments LEFT JOIN users ON users.id = comments.user_id WHERE comments.post_id = :post_id';
+				$comments = DB->query($sql, ['post_id' => $post_id])->getAll();
+				echo get_component('comments.php', [
+					'comments' => $comments,
+					'main_id' => $post_id,
+					'auth' => true,
+					'current_username' => $_COOKIE['user']['username']
+				]);
+				break;
+			case 'deletePost':
+				$post_id = $_POST['post_id'];
+				$sql = 'DELETE FROM posts WHERE id=:id';
+				DB->query($sql, ['id' => $post_id]);
 		}
 	}
 	exit;
