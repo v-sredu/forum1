@@ -26,8 +26,22 @@ class Database
 		{
 			$this->stmt->bindValue($key, $value, PDO::PARAM_INT);
 		}
-		$this->stmt->execute();
+		return $this;
+	}
 
+	public function bind_value_str($query, $params): static
+	{
+		$this->stmt = $this->pdo->prepare($query);
+		foreach ($params as $key => $value)
+		{
+			$this->stmt->bindValue($key, $value);
+		}
+		return $this;
+	}
+
+	public function execute(): static
+	{
+		$this->stmt->execute();
 		return $this;
 	}
 
