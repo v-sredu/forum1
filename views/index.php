@@ -43,7 +43,7 @@ $search
 GROUP BY posts.id";
 $data = DB->query($sql)->getAll();
 ?>
-	<main class="col p-4">
+	<main class="col p-2 p-sm-3">
 		<?=get_component('cards.php', [
 			'user_data' => $user_data,
 			'cards_data' => $data,
