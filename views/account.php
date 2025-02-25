@@ -104,7 +104,7 @@ LEFT JOIN tags ON posts_tags.tag_id = tags.id
 JOIN users ON posts.user_id = users.id WHERE posts.user_id = :user_id GROUP BY posts.id';
 		$data = DB->query($sql, ['user_id' => $account_data['id']])->getAll();
 		?>
-		<div class="wrapper d-flex p-3">
+		<div class="wrapper p-3">
 			<?=get_component('cards.php', [
 				'user_data' => $user_data,
 				'cards_data' => $data,
