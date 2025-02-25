@@ -15,35 +15,21 @@ class Database
 	{
 		$this->stmt = $this->pdo->prepare($query);
 		$this->stmt->execute($params);
+
 		return $this;
 	}
 
 	public function prepare($query): static
 	{
 		$this->stmt = $this->pdo->prepare($query);
-		return $this;
-	}
-	public function bind_value_int($params): static
-	{
-		foreach ($params as $key => $value)
-		{
-			$this->stmt->bindValue($key, $value, PDO::PARAM_INT);
-		}
-		return $this;
-	}
 
-	public function bind_value_str($params): static
-	{
-		foreach ($params as $key => $value)
-		{
-			$this->stmt->bindValue($key, $value);
-		}
 		return $this;
 	}
 
 	public function execute($params = []): static
 	{
 		$this->stmt->execute($params);
+
 		return $this;
 	}
 
@@ -56,10 +42,12 @@ class Database
 	{
 		return $this->stmt->fetch();
 	}
-public function getLastId(): bool|string
-{
+
+	public function getLastId(): bool|string
+	{
 		return $this->getPdo()->lastInsertId();
-}
+	}
+
 	public function getColumn(): false|array
 	{
 		return $this->stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -69,19 +57,12 @@ public function getLastId(): bool|string
 	{
 		return $this->pdo;
 	}
-	public function delete($string, $params) : void
+
+	public function check($string, $params): bool
 	{
-		$sql = 'DELETE FROM ' . $string;
-		$this->query($sql, $params);
-	}
-	public function insert($string, $params) : void
-	{
-		$sql = 'INSERT INTO ' . $string;
-		$this->query($sql, $params);
-	}
-	public function check($string, $params): bool {
 		$sql = 'SELECT 1 FROM ' . $string;
 		$res = $this->query($sql, $params)->getOne();
+
 		return (bool)$res;
 	}
 }
