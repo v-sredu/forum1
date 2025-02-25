@@ -15,7 +15,6 @@ class Database
 	{
 		$this->stmt = $this->pdo->prepare($query);
 		$this->stmt->execute($params);
-
 		return $this;
 	}
 
@@ -42,9 +41,9 @@ class Database
 		return $this;
 	}
 
-	public function execute(): static
+	public function execute($params = []): static
 	{
-		$this->stmt->execute();
+		$this->stmt->execute($params);
 		return $this;
 	}
 
@@ -57,7 +56,10 @@ class Database
 	{
 		return $this->stmt->fetch();
 	}
-
+public function getLastId(): bool|string
+{
+		return $this->getPdo()->lastInsertId();
+}
 	public function getColumn(): false|array
 	{
 		return $this->stmt->fetchAll(PDO::FETCH_COLUMN);
