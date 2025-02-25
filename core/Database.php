@@ -19,9 +19,13 @@ class Database
 		return $this;
 	}
 
-	public function bind_value_int($query, $params): static
+	public function prepare($query): static
 	{
 		$this->stmt = $this->pdo->prepare($query);
+		return $this;
+	}
+	public function bind_value_int($params): static
+	{
 		foreach ($params as $key => $value)
 		{
 			$this->stmt->bindValue($key, $value, PDO::PARAM_INT);
@@ -29,9 +33,8 @@ class Database
 		return $this;
 	}
 
-	public function bind_value_str($query, $params): static
+	public function bind_value_str($params): static
 	{
-		$this->stmt = $this->pdo->prepare($query);
 		foreach ($params as $key => $value)
 		{
 			$this->stmt->bindValue($key, $value);
