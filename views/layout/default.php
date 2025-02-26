@@ -3,7 +3,7 @@ $res = DB->query('SELECT * FROM tags')->getAll();
 $tags = '';
 foreach ($res as $row)
 {
-	$tags .= "<a href='/?tag=$row[id]' class='list-group-item d-inline-block p-2 mb-1 rounded-4'>$row[name]</a>";
+	$tags .= "<a href='/?tag=$row[id]' class='list-group-item d-inline-block p-1 m-0 rounded-4 small lh-1'>$row[name]</a>";
 }
 ?>
 <!DOCTYPE html>

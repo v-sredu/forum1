@@ -15,7 +15,7 @@ $user_data = $_COOKIE['user'] ?? 0;
 			<label for="title">Заголовок</label>
 		</div>
 		<div class="col form-floating mb-3">
-			<textarea class="form-control focus-ring focus-ring-warning min-vh-100" name="content" id="text" required maxlength="1000"></textarea>
+			<textarea class="form-control focus-ring focus-ring-warning min-vh-100" name="content" id="text" required maxlength="10000"></textarea>
 		</div>
 		<div class="col form-floating mb-3">
 			<input type="text" class="form-control focus-ring focus-ring-warning" id="tag" name="tags" placeholder="title" required>
