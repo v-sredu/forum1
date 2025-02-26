@@ -13,9 +13,8 @@ $sql = 'SELECT users.username, users.avatar, COUNT(DISTINCT users_subscribers.id
 FROM users
 LEFT JOIN users_subscribers ON users_subscribers.user_id = users.id
 LEFT JOIN posts ON posts.user_id = users.id WHERE users_subscribers.subscriber_id = :user_id GROUP BY users.id';
-$data = DB->query($sql, ['user_id' =>$user_data['id']])->getAll();
-$post_all = count($data);
-$data = array_slice($data, $page_slice, POST_COUNT);
+$cards = DB->query($sql, ['user_id' =>$user_data['id']])->getAll();
+$post_all = count($cards);
 ?>
 	<main class="col p-4">
 		<?php if ($post_all>0): ?>
@@ -49,7 +48,8 @@ $data = array_slice($data, $page_slice, POST_COUNT);
 								break;
 						}
 					}
-					foreach ($data as $card) : ?>
+					$cards = array_slice($cards, $page_slice, POST_COUNT);
+					foreach ($cards as $card) : ?>
 						<div class="cards mb-4 d-flex flex-column gap-3">
 							<div class="card border-0 rounded-4 p-2 mb-1">
 								<a href="/user/<?=$card['username']?>"
