@@ -1,6 +1,6 @@
 <?php
 $total_page = ceil($post_all / POST_COUNT);
-$start_page = max(1, $page - 2);
+$start_page = max(1, $page - 1);
 $end_page = min($total_page, $page + 2);
 ?>
 <ul class="pagination justify-content-end">
