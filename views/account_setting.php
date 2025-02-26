@@ -37,12 +37,12 @@ $user = DB->query('SELECT name, surname, username FROM users WHERE id=:id', ['id
 				</div>
 				<div class="col">
 					<label for="password" class="form-label">Пароль</label>
-					<input type="text" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
+					<input type="password" name="password" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="password"
 							placeholder="1234567890" required>
 				</div>
 				<div class="col">
 					<label for="repeatPassword" class="form-label">Повторите пароль</label>
-					<input type="text" name="repeatPassword" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="repeatPassword"
+					<input type="password" name="repeatPassword" class="form-control focus-ring focus-ring-warning rounded-3 p-2" id="repeatPassword"
 							placeholder="1234567890" required>
 				</div>
                 <div class="col mt-4 text-end">
