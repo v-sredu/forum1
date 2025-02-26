@@ -22,7 +22,6 @@ $pages = [
 	'reg.php' => '#^/reg$#',
 	'404.php' => '#^/404$#',
 ];
-
 //ajax
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -96,7 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 			$isExist = DB->check('users WHERE username = :username', ['username' => $username]);
 			if ($isExist)
 			{
-				return 'Данный username существует';
+				echo 'Данный username существует';
+				exit;
 			}
 
 			$password = password_hash($password, PASSWORD_DEFAULT);
@@ -154,6 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 			if (!empty($avatar))
 			{
 				$avatar_name = $id . ($avatar['type'] === 'image/jpeg' ? '.jpg' : '.png');
+				$sql = 'UPDATE users SET avatar=:avatar WHERE id=:id';
 				if (move_uploaded_file($avatar['tmp_name'], AVATARS . '/' . $avatar_name))
 				{
 					DB->query($sql, [
@@ -236,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		case 'createPost':
 			$user_id = $_COOKIE['user']['id'];
 			$title = mb_substr(htmlspecialchars($_POST['title']), 0, 99);
-			$content = mb_substr(nl2br(htmlspecialchars($_POST['content'])), 0, 999);
+			$content = mb_substr(nl2br(htmlspecialchars($_POST['content'])), 0, 9999);
 			$date = date('Y-m-d');
 			$sql = 'INSERT INTO posts SET user_id=:user_id, title=:title, content=:content, date=:date';
 			DB->query($sql, [
