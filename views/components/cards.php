@@ -1,10 +1,6 @@
 <?php
-$post_all = count($cards_data);
-if ($post_all>0):
-	$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-	$page_slice = ($page - 1) * POST_COUNT;
+//if ($post_all>0):
 	$sort = $_GET['sort'] ?? 0;
-	$cards_data = array_slice($cards_data, $page_slice, POST_COUNT);
 	?>
 	<div class="cards-block">
 		<?=get_component('buttons_sort.php', [
@@ -44,7 +40,9 @@ if ($post_all>0):
 						break;
 				}
 			}
-
+			$post_all = count($cards_data);
+			$page_slice = ($page - 1) * POST_COUNT;
+			$cards_data = array_slice($cards_data, $page_slice, POST_COUNT);
 			if (!empty($user_data['auth']))
 			{
 				$sql = 'SELECT post_id FROM likes WHERE user_id = :user_id';
@@ -76,8 +74,8 @@ if ($post_all>0):
 						</div>
 					</div>
 					<a class="mb-3 text-decoration-none d-block text-body" href="/post/<?=$card['id']?>">
-						<h3 class="card-title fs-5"><?=$card['title']?></h3>
-						<p class="card-text">
+						<h3 class="card-title fs-5 text-break"><?=$card['title']?></h3>
+						<p class="card-text text-break">
 							<?=mb_substr($card['content'], 0,100)?>
 						</p>
 					</a>
@@ -135,4 +133,4 @@ if ($post_all>0):
 			'page' => $page
 		]);?>
 	</div>
-<?php endif;
+<?php //endif;

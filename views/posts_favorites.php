@@ -44,6 +44,7 @@ $data = DB->query($sql, ['user_id' => $user_data['id']])->getAll();
 		<?=get_component('cards.php', [
 			'user_data' => $user_data,
 			'cards_data' => $data,
+			'page' =>(isset($_GET['page']) && is_numeric($_GET['page'])) ? (int)$_GET['page'] : 1
 		]);?>
 	</main>
 <?php

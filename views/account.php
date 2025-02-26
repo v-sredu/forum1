@@ -108,6 +108,7 @@ JOIN users ON posts.user_id = users.id WHERE posts.user_id = :user_id GROUP BY p
 			<?=get_component('cards.php', [
 				'user_data' => $user_data,
 				'cards_data' => $data,
+				'page' =>(isset($_GET['page']) && is_numeric($_GET['page'])) ? (int)$_GET['page'] : 1
 			]);?>
 		</div>
 	</main>
